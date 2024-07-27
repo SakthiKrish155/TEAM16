@@ -38,36 +38,39 @@ const Home = () => {
       </div>
       <div className='mt-4 px-40'>
       <PulsatingButton/>
-
       </div>
     </ShineBorder>
       <div className='w-1/2 flex justify-center'>
         <img className='w-2/3' src={heroImage} alt="Hero" />
       </div>
-    </div>
+    </div>  
 
     {/* Carousel Component */}
-    <div className='py-16'>
+    <div >
         <Carouselhome />
       </div>
    
     {/* 2nd division */}
-    <div className='border-t border-green-700'></div> 
+    {/* <div className='border-t border-green-700'></div>  */}
     <div className='flex bg-black'>
-    <div className='w-1/2'>
-        <img  className= 'h-400' src ={about}/>
+    <div className='w-1/2 p-4'>
+        <img className='h-400 object-cover rounded-lg shadow-lg' src={about} alt="About Us" />
     </div>
-      <div  
-      className='w-1/2 flex justify-center'>
-          <div className='flex flex-col justify-center'>
-              <h1 className='text-4xl text-green-700 border-b-4 mb-5 ml-5 w-[160px] font-bold text-hover-effect'>About us</h1>
-              <p className='text-white font-oswald mr-5 ml-5 text-2xl text-hover-effect'>Welcome to our Task Management Website, your ultimate solution for efficient and seamless project management.
+    <div className='w-1/2 flex justify-center p-4'>
+        <div className='flex flex-col justify-center'>
+            <h1 className='text-4xl text-green-700 border-b-4 mb-5 ml-5 w-[160px] font-bold transition-colors duration-300 hover:text-green-400'>
+                About Us
+            </h1>
+            <p className='text-white font-oswald mr-5 ml-5 text-2xl leading-relaxed'>
+                Welcome to our Task Management Website, your ultimate solution for efficient and seamless project management.
                 Our platform is designed to streamline the process of assigning, tracking, and completing tasks within your team. Whether you're a project manager overseeing a large project or a team member working on specific tasks, 
-                our website offers a user-friendly interface to keep everyone on the same page.</p>
-          </div>
-      </div>
+                our website offers a user-friendly interface to keep everyone on the same page.
+            </p>
+        </div>
+    </div>
+</div>
 
-  </div>
+
   {/* 3rd division */}
   <div className='flex px-5 py-32 bg-black justify-center '>
       

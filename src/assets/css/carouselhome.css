@@ -1,0 +1,30 @@
+/* Define the animation */
+@keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .carousel-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .carousel-grid {
+    display: flex;
+    width: 80%; /* To ensure continuous scrolling */
+    animation: scroll 20s linear infinite; /* Adjust duration for the speed */
+  }
+  
+  .card {
+    flex-shrink: 0;
+    width: 33.3333%; /* To show 3 items at once */
+    height: 200px; /* Adjust height here */
+    margin: 0 20px; /* Adjust gap between items */
+    border-radius: 8px;
+    
+  }
+  
