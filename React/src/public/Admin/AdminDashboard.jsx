@@ -30,7 +30,7 @@ const AdminDashboard = () => {
   return (
     <div className='h-screen w-1/6 flex flex-col justify-center items-center'>
       <div className='h-[5%] text-primary font-bold text-l flex flex-col justify-between items-center'>
-        <img src='https://ik.imagekit.io/s06oi31ye/Images/logo-svg.svg?updatedAt=1722105104552' className='h-60 w-60' />
+        <img src='https://ik.imagekit.io/s06oi31ye/Images/logo-svg.svg?updatedAt=1722105104552' className='h-60 bg-white w-60' />
       </div>
       <div className='h-[90%] w-full flex flex-col justify-center items center gap-2'>
         {
