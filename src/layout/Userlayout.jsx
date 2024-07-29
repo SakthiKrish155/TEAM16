@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 const UserLayout = () => {
   return (
-    <div className='h-screen w-screen overflow-x-hidden m-0 p-0 flex flex-row overflow-y-auto'>
+    <div className='h-screen w-screen overflow-x-hidden m-0 p-0 flex flex-row overflow-y-auto relative'>
       <UserLeftbar />
       <div className='h-screen w-5/6 flex justify-center items-center flex-col'>
         <UserTopbar />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Users, Power ,ClipboardList,CalendarCheck2,CircleEllipsis,LayoutList} from 'lucide-react';
+import { Star, Power ,ClipboardList,CalendarCheck2,CircleEllipsis,LayoutList} from 'lucide-react';
 import { Button } from '../ui/button';
 import '../../assets/css/styles.css'
 
@@ -24,9 +24,9 @@ const Leftbar = () => {
       icon: CircleEllipsis,
     },
     {
-      title: 'Not started',
-      link: '/notstarted',
-      icon: LayoutList,
+      title: 'Important tasks',
+      link: '/important',
+      icon: Star,
     },
   ];
 

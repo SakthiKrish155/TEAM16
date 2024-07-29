@@ -1,4 +1,3 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -17,13 +16,12 @@ module.exports = {
         "2xl": "1400px",
       },
     },
-    fontFamily:{
-      'hero-font':'Playwrite+HR+Lijeva',
+    fontFamily: {
+      'hero-font': 'Playwrite+HR+Lijeva',
       'kalnia': ['Kalnia Glaze', 'sans-serif'],
       'oswald': ['Oswald', 'sans-serif'],
-      'playwrite': ['Playwrite AT', 'serif'] ,
+      'playwrite': ['Playwrite AT', 'serif'],
       'edu-hand': ['Edu AU VIC WA NT Hand', 'sans-serif'],
-      'edu-hand': ['"Edu AU VIC WA NT Hand"', 'cursive'],
       'raleway': ['Raleway', 'sans-serif'],
     },
     extend: {
@@ -72,12 +70,22 @@ module.exports = {
           "0%, 100%": { boxShadow: "0 0 0 0 var(--pulse-color)" },
           "50%": { boxShadow: "0 0 0 8px var(--pulse-color)" },
         },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
       },
       animation: {
         pulse: "pulse 2s ease-in-out infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         ripple: "ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite",
+        marquee: "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
       },
     },
   },

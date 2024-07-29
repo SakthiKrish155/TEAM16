@@ -15,7 +15,7 @@ import TaskAssign from './components/pages/admin/TasksAssign';
 
 import AllTasks from './components/pages/user/AllTasks';
 import Complete from './components/pages/user/Complete';
-import Notstarted from './components/pages/user/Notstarted';
+import Importanttask from './components/pages/user/Importanttask';
 import Progress from './components/pages/user/Progress';
 import UserLayout from './layout/Userlayout';
 
@@ -37,11 +37,11 @@ const App = () => {
             <Route path='/members' element={<Members/>}/>
             <Route path='/tasks' element={<TaskAssign/>}/>
           </Route>
-          <Route element={<UserLayout/>}>
+          <Route element={<UserLayout />}>
             <Route path='/alltasks' element={<AllTasks/>} />
             <Route path='/completed' element={<Complete/>}/>
             <Route path='/progress' element={<Progress/>}/>
-            <Route path='/notstarted' element={<Notstarted/>}/>
+            <Route path='/important' element={<Importanttask/>}/>
           </Route>
         </Routes> 
       </BrowserRouter>

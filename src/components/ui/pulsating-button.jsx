@@ -1,16 +1,15 @@
-// PulsatingButton.js
 "use client";
 import React from "react";
-
 import { cn } from "@/lib/utils"; // Ensure this utility function is available in your project
 
-export default function PulsatingButton({
+const PulsatingButton = ({
   className,
   children = "Get Started",
   pulseColor = "#10B981",
   duration = "1.5s",
+  onClick, // Accept onClick prop
   ...props
-}) {
+}) => {
   return (
     <button
       className={cn(
@@ -21,10 +20,13 @@ export default function PulsatingButton({
         "--pulse-color": pulseColor,
         "--duration": duration
       }}
+      onClick={onClick} // Use onClick prop
       {...props}
     >
       <div className="relative z-10">{children}</div>
       <div className="absolute top-1/2 left-1/2 size-full rounded-lg bg-inherit animate-pulse -translate-x-1/2 -translate-y-1/2" />
     </button>
   );
-}
+};
+
+export default PulsatingButton;

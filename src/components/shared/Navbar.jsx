@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ModeToggle } from '../ui/mode-toggle';
+import { CircleCheck } from 'lucide-react';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -23,16 +24,16 @@ const Navbar = () => {
 
     return (
         <div className='w-full h-[8vh] flex flex-row justify-between items-center bg-black text-white border-b-2 border-green-500 relative'>
-            <div className='h-full w-1/4 flex justify-center items-center font-bold'>
-                Logo
+            <div className='h-full w-2/4 flex justify-start items-center ml-20 font-oswald font-extrabold text-green-500 p-2 '>
+            <CircleCheck size={36} color="#0b9314" />VOID TASKS
             </div>
-            <div className='hidden md:flex h-full w-3/4 justify-center items-center gap-10'>
+            <div className='hidden md:flex h-full w-2/4 justify-center p-10 items-center gap-10 '>
                 {
                     LinksData.map((data, index) => (
                         <li key={index} className='list-none'>
                             <NavLink
                                 to={data.link}
-                                className='text-white font-bold hover:text-green-500'
+                                className='text-white font-extrabold hover:text-green-500 '
                                 
                             >
                                 {data.title}
