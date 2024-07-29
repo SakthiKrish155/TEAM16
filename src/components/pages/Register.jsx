@@ -39,8 +39,8 @@ const Register = () => {
 
       // Redirect to login page after a short delay
       setTimeout(() => {
-        navigate('/Login');
-      }, 1000);
+        navigate('/login');
+      }, 2000); // Delay should match the toast notification duration
     }
   };
 

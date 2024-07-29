@@ -86,15 +86,15 @@ import ReviewForm from './Reviewform';
         </div>
         <ReviewForm/>
       </div>
-   
-      <div className='w-1/2 flex justify-center'>
+      {/* <div className='w-1/2 flex justify-center'>
         <img className='w-2/3' src={timesplitting} alt="Hero" />
+      </div> */}
+      <div className='w-1/2 flex justify-center'>
+      <MarqueeDemo/>
       </div>
+   
     </div>
 
-    {/* <div >
-    <MarqueeDemo/>
-    </div> */}
     </>
   );
 }
