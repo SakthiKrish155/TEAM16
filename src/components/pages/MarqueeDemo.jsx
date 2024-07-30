@@ -6,37 +6,37 @@ const reviews = [
   {
     name: "Jack",
     username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
+    body: "I have been using VoidTasks for a few months now, and it has significantly improved our team productivity",
     img: "https://avatar.vercel.sh/jack",
   },
   {
     name: "Jill",
     username: "@jill",
-    body: "I don't know what to say. I'm speechless. This is amazing.",
+    body: "VoidTasks has a fantastic set of features that cater to all our project management needs. The ability to assign tasks to specific team members and receive real-time updates is invaluable.",
     img: "https://avatar.vercel.sh/jill",
   },
   {
     name: "John",
     username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "As a project manager, VoidTasks has been a game-changer for me. The dashboard provides a comprehensive overview of all ongoing projects",
     img: "https://avatar.vercel.sh/john",
   },
   {
     name: "Jane",
     username: "@jane",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "VoidTasks is an efficient tool for managing tasks and projects. The customizable nature of the platform allows us to tailor it to our specific needs.",
     img: "https://avatar.vercel.sh/jane",
   },
   {
     name: "Jenny",
     username: "@jenny",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "VoidTasks has made team collaboration so much easier. The ability to assign tasks, set deadlines, and track progress in one place has streamlined our workflow",
     img: "https://avatar.vercel.sh/jenny",
   },
   {
     name: "James",
     username: "@james",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "VoidTasks combines user-friendliness with a rich set of features. The task management and notification system are top-notch",
     img: "https://avatar.vercel.sh/james",
   },
 ];

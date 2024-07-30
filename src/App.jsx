@@ -20,6 +20,7 @@ import Progress from './components/pages/user/Progress';
 import UserLayout from './layout/Userlayout';
 
 
+
 const App = () => {
   return (
     <div>
@@ -38,6 +39,7 @@ const App = () => {
             <Route path='/tasks' element={<TaskAssign/>}/>
           </Route>
           <Route element={<UserLayout />}>
+            {/* <Route path='/dashboard' element={<Dashboard/>} /> */}
             <Route path='/alltasks' element={<AllTasks/>} />
             <Route path='/completed' element={<Complete/>}/>
             <Route path='/progress' element={<Progress/>}/>

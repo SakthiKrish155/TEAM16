@@ -4,23 +4,24 @@ import { Pencil, Heart, Trash2, CirclePlus } from 'lucide-react';
 const Cards = ({ onAddClick }) => {
   const data = [
     {
-      title: 'Task 1',
-      desc: 'Description 1',
+      title: 'Update Website Content',
+      desc: 'Review and refresh the existing website content to ensure it is up-to-date, relevant, and aligned with our brand voice.',
       status: "Incomplete"
     },
     {
-      title: 'Task 2',
-      desc: 'Description 2',
+      title: 'Fix Broken Links  ',
+      desc: 'Conduct a thorough audit of the website to identify and fix any broken links. Ensure all internal and external links are functional to enhance user experience and improve SEO.',
+
       status: "Completed"
     },
     {
-      title: 'Task 3',
-      desc: 'Description 3',
+      title: 'Optimize Page Load Speed',
+      desc: 'Analyze the website performance and identify areas for improvement to optimize page load speed. This may involve compressing images, minifying CSS/JavaScript, and leveraging browser caching.',
       status: "Completed"
     },
     {
-      title: 'Task 4',
-      desc: 'Description 4',
+      title: 'Test Website Responsiveness',
+      desc: 'Test the website on various devices and screen sizes to ensure it is fully responsive. Report any layout issues or user experience problems that need to be addressed for mobile and tablet users.',
       status: "Incomplete"
     },
   ];

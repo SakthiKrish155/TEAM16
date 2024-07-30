@@ -10,7 +10,7 @@ import PulsatingButton from '../ui/pulsating-button';
 import Carouselhome from '../ui/Carouselhome';
 import MarqueeDemo from '../pages/MarqueeDemo';
 import { useNavigate } from 'react-router-dom';
-import timesplitting from '../../assets/images/timesplitting.png'
+// import timesplitting from '../../assets/images/timesplitting.png'
 // import { CircleCheck } from 'lucide-react';
 import StarRating from './StarRating';
 import { useState } from 'react';
@@ -76,7 +76,11 @@ import ReviewForm from './Reviewform';
 
 
   
-  <div className='flex px-5 py-32 bg-black justify-center '>
+  <div className='flex px-2 py-32 bg-black justify-center '>
+      <div className='w-1/2 flex justify-center'>
+      <MarqueeDemo/>
+      </div>
+   
       <div className='flex flex-col p-2'>
 
         <div className="p-5">
@@ -86,13 +90,7 @@ import ReviewForm from './Reviewform';
         </div>
         <ReviewForm/>
       </div>
-      {/* <div className='w-1/2 flex justify-center'>
-        <img className='w-2/3' src={timesplitting} alt="Hero" />
-      </div> */}
-      <div className='w-1/2 flex justify-center'>
-      <MarqueeDemo/>
-      </div>
-   
+    
     </div>
 
     </>
