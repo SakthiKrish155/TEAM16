@@ -13,9 +13,9 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 
 const projectData = [
-  { id: "P001", name: "Project Alpha", status: "In Progress", manager: "Alice Johnson", budget: "$5000.00" },
-  { id: "P002", name: "Project Beta", status: "Completed", manager: "Bob Smith", budget: "$7500.00" },
-  { id: "P003", name: "Project Gamma", status: "Pending", manager: "Charlie Brown", budget: "$3000.00" },
+  { id: "P001", name: "Project Alpha", status: "In Progress", manager: "Alice Johnson", budget: "₹50000.00" },
+  { id: "P002", name: "Project Beta", status: "Completed", manager: "Bob Smith", budget: "₹75000.00" },
+  { id: "P003", name: "Project Gamma", status: "Pending", manager: "Charlie Brown", budget: "₹30000.00" },
   // Add more projects as needed
 ];
 

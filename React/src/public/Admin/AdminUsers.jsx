@@ -16,9 +16,9 @@ import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover
 
 // Sample user data
 const userData = [
-  { id: "U001", name: "John Doe", designation: "Software Engineer", email: "john.doe@example.com", phone: "+1234567890" },
-  { id: "U002", name: "Jane Smith", designation: "Product Manager", email: "jane.smith@example.com", phone: "+0987654321" },
-  { id: "U003", name: "Mike Brown", designation: "UX Designer", email: "mike.brown@example.com", phone: "+1122334455" },
+  { id: "U001", name: "Alex Volkov", designation: "Software Engineer", email: "volkov@gmail.com", phone: "+1234567890" },
+  { id: "U002", name: "Rhys Larsen", designation: "Product Manager", email: "larsen@gmail.com", phone: "+0987654321" },
+  { id: "U003", name: "Christian Harper", designation: "UX Designer", email: "harper@gmail.com", phone: "+1122334455" },
   // Add more users as needed
 ];
 

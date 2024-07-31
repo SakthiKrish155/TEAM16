@@ -1,14 +1,15 @@
 import React from 'react';
 import Footer from '../public/Web/Footer';
 import { FaTasks, FaClock, FaUsers, FaBell, FaChartBar, FaGlobe } from 'react-icons/fa'; // Importing icons
+import { Link } from 'react-router-dom';
 
 const Main = () => {
   return (
     <div>
       <div className='text-center my-10'>
-          <h1 className='text-7xl font-bold' style={{ fontFamily: 'initial' }}>Welcome to Time Turner !!!</h1>
-          <p className='text-3xl mt-4' style={{ fontFamily: 'IM Fell English, serif' }}>"Revolutionize Your Task and Time Management"</p>
-        </div>
+        <h1 className='text-7xl font-bold' style={{ fontFamily: 'initial' }}>Welcome to Time Turner !!!</h1>
+        <p className='text-3xl mt-4' style={{ fontFamily: 'IM Fell English, serif' }}>"Revolutionize Your Task and Time Management"</p>
+      </div>
       <div className='flex flex-row w-full justify-center items-center'>
         <div className='w-2/4 flex justify-center items-center bg-background p-5'>
           <img src='https://ik.imagekit.io/s06oi31ye/Images/Organizing%20projects-pana.svg?updatedAt=1721923592378' alt='Banner' className='h-auto w-full object-cover' />
@@ -59,15 +60,17 @@ const Main = () => {
 
       <div className='text-center my-10 p-6 bg-primary/10' style={{ fontFamily: 'monospace, serif' }}>
         <blockquote className='text-2xl text-foreground italic'>
-        “The key is not to prioritize what's on your schedule, but to schedule your priorities.” <br/>
-        – Stephen Covey, The 7 Habits of Highly Effective People (1989)
+          “The key is not to prioritize what's on your schedule, but to schedule your priorities.” <br />
+          – Stephen Covey, The 7 Habits of Highly Effective People (1989)
         </blockquote>
       </div>
 
       <div className='text-center my-10'>
-        <button className='bg-blue-500 text-background px-6 py-3 rounded-full text-xl' style={{ fontFamily: 'IM Fell English, serif' }}>
-          Start Your Journey Towards Better Productivity Today!
-        </button>
+        <Link to="/signIn">
+          <button type='button' className='bg-blue-500 text-background px-6 py-3 rounded-full text-xl' style={{ fontFamily: 'IM Fell English, serif' }}>
+            Start Your Journey Towards Better Productivity Today!
+          </button>
+        </Link>
       </div>
 
       <div>
