@@ -7,9 +7,9 @@ const Footer = () => {
     <>
     
 
-    <footer className="bg-black text-white  border-y-2 border-green-700">
+    <footer className="bg-black text-white py-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="flex space-x-16">
+        <div className="flex space-x-4">
           <a href="/about-us" className="text-green-500 text-2xl ">About Us</a>
           <a href="/contact-us" className="text-green-500 text-2xl">Contact Us</a>
         </div>
