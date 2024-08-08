@@ -1,12 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Users, Power ,ClipboardList,CalendarCheck2,CircleEllipsis,LayoutList} from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Star, Power, ClipboardList, CalendarCheck2, CircleEllipsis, LayoutList } from 'lucide-react';
 import { Button } from '../ui/button';
-import '../../assets/css/styles.css'
+import '../../assets/css/styles.css';
 
+const UserLeftbar = () => {
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    // Perform any logout logic here (e.g., clearing tokens, calling an API, etc.)
+    // Then navigate to the login page
+    navigate('/login');
+  };
 
-const Leftbar = () => {
   const AdminLinks = [
     {
       title: 'AllTasks',
@@ -28,11 +34,15 @@ const Leftbar = () => {
       link: '/notstarted',
       icon: LayoutList,
     },
+    {
+      title: 'Important tasks',
+      link: '/important',
+      icon: Star,
+    },
   ];
 
   return (
-    <div className='leftbar h-screen w-1/6 flex justify-center items-center flex-col shadow-sm shadow-primary pt-10m border-gray-500 border-x-2'>
-      
+    <div className='leftbar h-screen w-1/6 flex justify-center items-center flex-col shadow-sm shadow-primary pt-10 border-gray-500 border-x-2'>
       <div className='links h-[90%] w-full flex flex-col justify-start items-center gap-4'>
         {AdminLinks.map((data, index) => (
           <NavLink
@@ -48,7 +58,7 @@ const Leftbar = () => {
         ))}
       </div>
       <div className='logout h-[5%] w-full flex flex-col justify-center items-center'>
-        <Button className='p-10 bg-red-500/5 hover:bg-red-500/10 font-bold w-full'>
+        <Button onClick={handleLogout} className='p-10 bg-red-500/5 hover:bg-red-500/10 font-bold w-full'>
           <span className='flex flex-row items-center justify-start h-full w-full gap-4 text-red-500'>
             <Power size={20} /> Logout
           </span>
@@ -58,4 +68,4 @@ const Leftbar = () => {
   );
 };
 
-export default Leftbar;
+export default UserLeftbar;

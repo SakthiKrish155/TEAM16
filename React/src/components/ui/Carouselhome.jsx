@@ -1,42 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { BentoCard, BentoGrid } from '../magicui/bento-grid';
+import '../.././assets/css/carouselhome.css';
+import task1 from '../../assets/images/task1.jpg';
+import task2 from '../../assets/images/task2.jpg';
+import task3 from '../../assets/images/task3.jpg';
+import task5 from '../../assets/images/task5.png';
+import task6 from '../../assets/images/task6.jpg';
 
 const Carouselhome = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const cards = [
-    { name: 'Card 1', description: 'Description 1', href: '#', background: 'Background 1' },
-    { name: 'Card 2', description: 'Description 2', href: '#', background: 'Background 2' },
-    { name: 'Card 3', description: 'Description 3', href: '#', background: 'Background 3' },
-    { name: 'Card 4', description: 'Description 4', href: '#', background: 'Background 4' },
-    { name: 'Card 5', description: 'Description 5', href: '#', background: 'Background 5' },
-    { name: 'Card 6', description: 'Description 6', href: '#', background: 'Background 6' }
+    { name: 'Task Prioritization', description: 'Helps individuals and teams prioritize tasks, ensuring that the most important and urgent tasks are completed first.', href: '#', background: '#000000', imgsrc: task1 },
+    { name: 'Workflow Organization', description: 'Organizes tasks in a logical sequence, preventing bottlenecks and ensuring a smooth workflow.', href: '#', background: '#000000', imgsrc: task2 },
+    { name: 'Task Assignment', description: 'Assigns specific tasks to individuals, making it clear who is responsible for what.', href: '#', background: '#000000', imgsrc: task3 },
+    { name: 'User Collaboration', description: 'Using task management tools enables team members to collaborate more effectively by sharing updates, files, and comments.', href: '#', background: '#000000', imgsrc: task1 },
+    { name: 'Stress Reduction', description: 'Reduces the chaos and stress associated with disorganized work by providing a clear structure and plan.', href: '#', background: '#000000', imgsrc: task5 },
+    { name: 'Performance Analytics', description: 'Provides data on task completion times, bottlenecks, and resource usage, which can inform better decision-making and process improvements.', href: '#', background: '#000000', imgsrc: task6 }
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % cards.length);
-    }, 500); // Change card every 0.5 seconds
-
-    return () => clearInterval(interval);
-  }, [cards.length]);
-
-  const displayedCards = cards.slice(currentIndex, currentIndex + 3).concat(cards.slice(0, Math.max(0, (currentIndex + 3) - cards.length)));
-
   return (
-    <div className="carousel-container bg-black text-white border border-gray-500 p-4">
-      <BentoGrid className="carousel-grid">
-        {displayedCards.map((card) => (
-          <BentoCard
-            key={card.name}
-            name={card.name}
-            background={card.background}
-            description={card.description}
-            href={card.href}
-            cta="Learn More"
-            className="hover:scale-105 transition-transform duration-300"
-          />
+    <div className="carousel-container bg-black text-white p-4 rounded-lg">
+      <div className="carousel-grid">
+        {cards.concat(cards).map((card, index) => (
+          <div
+            key={index}
+            className="card hover:scale-105 transition-transform duration-300 p-4 border border-gray-500"
+            style={{ background: card.background }}
+          >
+            <img src={card.imgsrc} alt={card.name} className="card-image"/>
+            <h3 className="text-lg font-bold text-green-600 pb-3">{card.name}</h3>
+            <p>{card.description}</p>
+          </div>
         ))}
-      </BentoGrid>
+      </div>
     </div>
   );
 };
