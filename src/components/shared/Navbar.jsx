@@ -23,7 +23,7 @@ const Navbar = () => {
     ];
 
     return (
-        <div className='w-full h-[8vh] flex flex-row justify-between items-center bg-black text-white border-b-2 border-green-500 relative'>
+        <div className='fixed w-full h-[8vh] flex flex-row justify-between items-center bg-black text-white border-b-2 border-green-500 z-50'>
             <div className='h-full w-2/4 flex justify-start items-center ml-20 font-oswald font-extrabold text-green-500 p-2 '>
             <CircleCheck size={36} color="#0b9314" />VOID TASKS
             </div>
