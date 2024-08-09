@@ -2,7 +2,7 @@ import React from 'react'
 
 const Complete = () => {
   return (
-    <div>Complete</div>
+    <div className='bg-black'>Complete</div>
   )
 }
 

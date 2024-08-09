@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Star, Power, ClipboardList, CalendarCheck2, CircleEllipsis, LayoutList } from 'lucide-react';
+import { Star, Power, ClipboardList, CalendarCheck2, CircleEllipsis, LayoutList,User } from 'lucide-react';
 import { Button } from '../ui/button';
 import '../../assets/css/styles.css';
 
@@ -14,6 +14,12 @@ const UserLeftbar = () => {
   };
 
   const AdminLinks = [
+    
+    {
+      title: 'Profile',
+      link: '/userprofile',
+      icon: User ,
+    },
     {
       title: 'AllTasks',
       link: '/alltasks',
@@ -43,7 +49,7 @@ const UserLeftbar = () => {
 
   return (
     <div className='leftbar h-screen w-1/6 flex justify-center items-center flex-col shadow-sm shadow-primary pt-10 border-gray-500 border-x-2'>
-      <div className='links h-[90%] w-full flex flex-col justify-start items-center gap-4'>
+      <div className='links h-[90%] w-full flex flex-col justify-start items-center '>
         {AdminLinks.map((data, index) => (
           <NavLink
             key={index}

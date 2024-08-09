@@ -28,10 +28,10 @@ const Cards = ({ onAddClick }) => {
   return (
     <div className='grid grid-cols-3 gap-6 p-6'>
       {data && data.map((item, i) => (
-        <div key={i} className='flex-col justify-between bg-black border-2 border-gray-400 rounded-lg p-3'>
+        <div key={i} className='flex-col justify-between bg-black border-2 border-gray-400 rounded-lg p-4'>
           <div>
             <h3 className='text-xl font-semibold text-white'>{item.title}</h3>
-            <p className='text-gray-300 my-2'>{item.desc}</p>
+            <p className='text-sm text-gray-100 my-1 '>{item.desc}</p>
           </div>
           <div className='mt-4 w-full flex items-center'>
             <button className={`${item.status === "Incomplete" ? "bg-red-500" : "bg-green-800"} text-black p-1 rounded w-2/6`}>
@@ -52,5 +52,4 @@ const Cards = ({ onAddClick }) => {
     </div>
   );
 };
-
 export default Cards;

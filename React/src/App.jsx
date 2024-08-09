@@ -18,6 +18,7 @@ import Complete from './components/pages/user/Complete';
 import Notstarted from './components/pages/user/Notstarted';
 import Progress from './components/pages/user/Progress';
 import UserLayout from './layout/Userlayout';
+import UserProfile from './components/pages/user/UserProfile';
 
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
             <Route path='/tasks' element={<TaskAssign/>}/>
           </Route>
           <Route element={<UserLayout/>}>
+            <Route path='/userprofile' element={<UserProfile/>} />
             <Route path='/alltasks' element={<AllTasks/>} />
             <Route path='/completed' element={<Complete/>}/>
             <Route path='/progress' element={<Progress/>}/>
