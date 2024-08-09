@@ -37,7 +37,7 @@ const chartConfig = {
 const TasksChart = () => {
     return (
         <div>
-            <Card className='w-[100vh] h-1/2'>
+            <Card>
                 <CardHeader>
                     <CardTitle>Task Completion Overview</CardTitle>
                     <CardDescription>Jan - June 2024</CardDescription>

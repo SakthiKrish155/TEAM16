@@ -5,12 +5,10 @@ import SignIn from './components/Web/SignIn'
 import SignUp from './components/Web/SignUp'
 import MainLayout from './layout/MainLayout'
 import AdminLayout from './layout/AdminLayout'
-import AdminDashboard from './public/Admin/AdminDashboard'
 import UserLayout from './layout/UserLayout'
-import UserDashboard from './public/User/UserDashboard'
 import AdminUsers from './public/Admin/AdminUsers'
-import AdminProjects from './public/Admin/AdminProjects'
-import AdminTasks from './public/Admin/AdminTasks'
+import AdminProjects from './public/Manager/ManagerProjects'
+import AdminTasks from './public/Manager/ManagerTasks'
 import Admin from './pages/Admin'
 import User from './pages/User'
 import UserInProgress from './public/User/UserInProgress'
@@ -19,6 +17,13 @@ import UserNotStarted from './public/User/UserNotStarted'
 import UserTasks from './public/User/UserTasks'
 import UserCompleted from './public/User/UserCompleted'
 import PageNotFound from './components/Web/PageNotFound'
+import AdminSettings from './public/Admin/AdminSettings'
+import ManagerLayout from './layout/ManagerLayout'
+import Manager from './pages/Manager'
+import ManagerProjects from './public/Manager/ManagerProjects'
+import ManagerTasks from './public/Manager/ManagerTasks'
+import ManagerSettings from './public/Manager/ManagerSettings'
+import UserSettings from './public/User/UserSettings'
 
 
 const App = () => {
@@ -32,9 +37,14 @@ const App = () => {
         </Route>
         <Route element={<AdminLayout />}>
           <Route path="/admin/content" element={<Admin />} />
-          <Route path="/admin/projects" element={<AdminProjects />} />
-          <Route path="/admin/tasks" element={<AdminTasks />} />
           <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/settings" element={<AdminSettings />} />
+        </Route>
+        <Route element={<ManagerLayout />}>
+          <Route path="/manager/content" element={<Manager />} />
+          <Route path="/manager/projects" element={<ManagerProjects />} />
+          <Route path="/manager/Tasks" element={<ManagerTasks />} />
+          <Route path="/manager/settings" element={<ManagerSettings />} />
         </Route>
         <Route element={<UserLayout />}>
           <Route path="/user/content" element={<User />} />
@@ -43,6 +53,7 @@ const App = () => {
           <Route path="/user/inProgress" element={<UserInProgress />} />
           <Route path="/user/important" element={<UserImportant />} />
           <Route path="/user/yetToStart" element={<UserNotStarted />} />
+          <Route path="/user/settings" element={<UserSettings />} />
         </Route>
         <Route to="/*" element={<PageNotFound />} />
       </Routes>

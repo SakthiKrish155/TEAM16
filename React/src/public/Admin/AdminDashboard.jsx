@@ -1,5 +1,8 @@
+import { ModeToggle } from '@/components/toggle-theme'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { CircleHelp, Home, Layers, Power, Settings, StickyNote, UserCircleIcon } from 'lucide-react'
+import { Skeleton } from '@/components/ui/skeleton'
+import { CircleHelp, Home, Layers, LucideSettings, Power, Settings, Settings2, Settings2Icon, StickyNote, User2Icon, UserCircleIcon } from 'lucide-react'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -11,19 +14,14 @@ const AdminDashboard = () => {
       icon: Home
     },
     {
-      title: 'Projects',
-      link: '/admin/projects',
-      icon: StickyNote
-    },
-    {
-      title: 'Tasks',
-      link: '/admin/tasks',
-      icon: Layers
-    },
-    {
       title: 'Users',
       link: '/admin/users',
-      icon: UserCircleIcon
+      icon: User2Icon
+    },
+    {
+      title: 'Settings',
+      link: '/admin/settings',
+      icon: Settings
     }
   ]
 
@@ -45,24 +43,40 @@ const AdminDashboard = () => {
         }
         <hr className="my-3" />
       </div>
-      <div className='h-[5%] w-full flex flex-col justify-center items-center'>
-        <div className='p-0 m-0 w-full flex flex-row justify-between items-center gap-3'>
-          <div className='w-1/3 flex justify-center items-center'>
-            <Settings />
-          </div>
-          <div className='w-2/3 flex justify-center items-center'>
-            <CircleHelp />
-          </div>
-          <div>
-            <Link to="/" className="w-1/3">
+      <div className='w-full flex flex-col justify-center items-center'>
+        {/* <div className='p-0 m-0 w-full flex flex-row justify-between items-center gap-3'> */}
+        {/* <div className='w-2/3 flex justify-center items-center'>
+            <Button className="bg-background hover:bg-transparent font-bold flex items-center justify-center">
+              <span className="text-foreground flex items-center justify-center">
+                <CircleHelp />
+              </span>
+            </Button>
+          </div> */}
+        <div>
+          {/* <Link to="/" className="w-1/3">
               <Button className="bg-background hover:bg-transparent font-bold flex items-center justify-center">
                 <span className="text-red-500 flex items-center justify-center">
                   <Power size={20} />
                 </span>
               </Button>
-            </Link>
+            </Link> */}
+          <div className='h-[8vh] w-full flex justify-center items-center gap-9'>
+            <div className='w-full h-full flex items-center justify-start'>
+              {/* <Skeleton className="w-[100px] h-[20px] rounded-full" />*/}
+              <div class="flex items-center gap-4">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                  <AvatarFallback >AD</AvatarFallback>
+                </Avatar>
+                <div class="font-medium text-primary">
+                  <div>Jese Leos</div>
+                </div>
+              </div>
+            </div>
+            <ModeToggle />
           </div>
         </div>
+        {/* </div> */}
       </div>
     </div>
   )
