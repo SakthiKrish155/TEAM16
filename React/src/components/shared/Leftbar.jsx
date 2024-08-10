@@ -10,7 +10,7 @@ const Leftbar = () => {
   const AdminLinks = [
     {
       title: 'Projects',
-      link: '/admin',
+      link: '/manager',
       icon: Target,
     },
     {

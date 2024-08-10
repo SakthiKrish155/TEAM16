@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import classNames from 'classnames';
 
 const StarRating = ({ rating = 0, onRatingChange }) => {
   const [hoveredRating, setHoveredRating] = useState(null);
@@ -26,10 +25,7 @@ const StarRating = ({ rating = 0, onRatingChange }) => {
           <svg
             key={index}
             xmlns="http://www.w3.org/2000/svg"
-            className={classNames("w-8 h-12 cursor-pointer", {
-              'text-green-500': isFilled,
-              'text-gray-300': !isFilled,
-            })}
+            className={`w-8 h-12 cursor-pointer ${isFilled ? 'text-green-500' : 'text-gray-300'}`}
             fill={isFilled ? 'currentColor' : 'none'}
             viewBox="0 0 36 36"
             stroke="currentColor"

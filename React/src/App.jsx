@@ -29,12 +29,12 @@ const App = () => {
         <Routes>
           <Route element={<Weblayout />}>
             <Route path='/' element={<Home />} />
-            <Route path='/Login' element={<Login />} />
+            <Route path='/login' element={<Login />} />
             <Route path='/Register' element={<Register />} />
             <Route path='/*' element={<Notfound />} />
           </Route>
           <Route element={<AdminLayout/>}>
-            <Route path='/admin' element={<Admin/>} />
+            <Route path='/manager' element={<Admin/>} />
             <Route path='/members' element={<Members/>}/>
             <Route path='/tasks' element={<TaskAssign/>}/>
           </Route>
