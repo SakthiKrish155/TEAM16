@@ -1,36 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { FaUser, FaEnvelope, FaLock, FaQuestionCircle, FaSignOutAlt, FaTrashAlt, FaGlobe, FaSave, FaEdit } from 'react-icons/fa';
-// import { authService } from '@/services/auth'; // Assume you have this service for authentication
+import { FaUser, FaEnvelope, FaLock, FaQuestionCircle, FaSignOutAlt, FaTrashAlt, FaSave, FaEdit } from 'react-icons/fa';
+import { authService } from '@/service/auth';
+import { getUserById, deleteUserById, updateUserById } from '@/service/api';
 
 const ManagerSettings = () => {
-  const [username, setUsername] = useState('JohnDoe'); // Initial state should be fetched from user data
-  const [email, setEmail] = useState('john.doe@example.com');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [language, setLanguage] = useState('English');
-  const [timeZone, setTimeZone] = useState('GMT');
-  const [profileVisibility, setProfileVisibility] = useState('Public');
   const [isEditing, setIsEditing] = useState(false);
+  const [userId, setUserId] = useState(null); 
 
-  const handleSave = () => {
-    // Implement save logic here
-    setIsEditing(false); // Disable editing after saving
+  useEffect(() => {
+    
+    const fetchUserId = async () => {
+      try {
+        const user = await authService.getCurrentUser(); 
+        setUserId(user.id);
+      } catch (error) {
+        console.error('Failed to fetch user ID:', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      const fetchUserData = async () => {
+        try {
+          const response = await getUserById(userId);
+          const userData = response.data;
+          setUsername(userData.username);
+          setEmail(userData.email);
+        } catch (error) {
+          console.error('Failed to fetch user data:', error);
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [userId]);
+
+  const handleSave = async () => {
+    try {
+      const updatedData = { username, email, newPassword };
+      await updateUserById(userId, updatedData);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to update user data:', error);
+    }
   };
 
-  const handleDeleteAccount = () => {
-    // Implement delete account logic here
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteUserById(userId);
+      authService.SignOut();
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Failed to delete user account:', error);
+    }
   };
 
   const handleLogout = () => {
     authService.SignOut();
-    window.location.href = '/login'; // Redirect to login page
+    window.location.href = '/';
   };
 
   const handleViewHelp = () => {
-    // Implement view help logic here
-    window.location.href = '/help'; // Redirect to help page
+    window.location.href = '/help';
   };
 
   return (

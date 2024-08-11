@@ -11,43 +11,25 @@ import {
 } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
 import { Plus, Edit, Trash } from 'lucide-react';
-import axios from 'axios';
-
-const API_URL = "http://localhost:8080";
-
-const getProjects = () => axios.get(`${API_URL}/projects/findAll`);
-const getProjectById = (projectId) => axios.get(`${API_URL}/projects/findById/${projectId}`);
-const addProject = (project) => axios.post(`${API_URL}/projects/add`, project);
-const updateProject = (projectId, project) => axios.put(`${API_URL}/projects/update/${projectId}`, project);
-const deleteProject = (projectId) => axios.delete(`${API_URL}/projects/delete/${projectId}`);
-
-// Function to get the current project manager's details
-const getCurrentUser = async () => {
-  // Replace with actual implementation to get the current user's details
-  return { id: "manager-id", name: "John Doe" };
-};
+import { getProjects, getProjectById, addProject, updateProject, deleteProject } from '@/service/api';
 
 const ManagerProjects = () => {
   const [projects, setProjects] = useState([]);
   const [isFormVisible, setFormVisible] = useState(false);
   const [formData, setFormData] = useState({
-    id: "",
+    projectid: "",
     projectname: "",
     projectdescription: "",
     duedate: ""
   });
-  const [managerId, setManagerId] = useState(""); // Store manager ID separately
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const manager = await getCurrentUser();
-        setManagerId(manager.id); // Set manager ID
-
         const response = await getProjects();
         setProjects(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error.response?.data || error.message || error);
       }
     };
 
@@ -62,15 +44,8 @@ const ManagerProjects = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Convert date to the correct format for backend
       const formattedDueDate = new Date(formData.duedate).toISOString().split('T')[0];
-
-      // Include managerId in the data sent to the backend
-      const projectData = {
-        ...formData,
-        duedate: formattedDueDate,
-        managerid: managerId
-      };
+      const projectData = { ...formData, duedate: formattedDueDate };
 
       if (formData.id) {
         await updateProject(formData.id, projectData);
@@ -80,15 +55,15 @@ const ManagerProjects = () => {
 
       const response = await getProjects(); // Refresh project list
       setProjects(response.data);
-      setFormVisible(false); // Hide form after submission
+      setFormVisible(false);
       setFormData({
-        id: "",
+        projectid: "",
         projectname: "",
         projectdescription: "",
         duedate: ""
       });
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Error submitting form:", error.response?.data || error.message || error);
     }
   };
 
@@ -98,7 +73,7 @@ const ManagerProjects = () => {
       const response = await getProjects(); // Refresh project list
       setProjects(response.data);
     } catch (error) {
-      console.error("Error deleting project:", error);
+      console.error("Error deleting project:", error.response?.data || error.message || error);
     }
   };
 
@@ -107,45 +82,49 @@ const ManagerProjects = () => {
       const response = await getProjectById(projectId);
       const project = response.data;
       setFormData({
-        id: project.id,
-        projectname: project.name,
-        projectdescription: project.description,
-        duedate: project.dueDate
+        projectid: project.projectid,
+        projectname: project.projectname,
+        projectdescription: project.projectdescription,
+        duedate: project.duedate
       });
       setFormVisible(true);
     } catch (error) {
-      console.error("Error fetching project details:", error);
+      console.error("Error fetching project details:", error.response?.data || error.message || error);
     }
   };
 
   return (
-    <div className='h-full w-full flex justify-center items-center'>
+    <div className='h-full w-full flex justify-center items-center p-7'>
       <div className='w-[90%] max-w-7xl bg-card text-card-foreground shadow-lg rounded-lg'>
         <Table>
-          <TableCaption className="bg-muted text-muted-foreground">Current Projects</TableCaption>
+          <TableCaption className="bg-muted text-muted-foreground">Ongoing Projects</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[120px] bg-primary text-primary-foreground">Project ID</TableHead>
               <TableHead className="bg-primary text-primary-foreground">Project Name</TableHead>
               <TableHead className="bg-primary text-primary-foreground">Due Date</TableHead>
-              <TableHead className="bg-primary text-primary-foreground">Actions</TableHead>
+              <TableHead className="bg-primary flex justify-center items-center text-primary-foreground">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {projects.map((project) => (
-              <TableRow key={project.id} className="bg-card">
-                <TableCell className="font-medium text-foreground">{project.id}</TableCell>
-                <TableCell className="text-foreground">{project.name}</TableCell>
-                <TableCell className="text-foreground">{project.dueDate}</TableCell>
-                <TableCell className="text-foreground">
-                  <Button onClick={() => handleEdit(project.id)}><Edit /> Edit</Button>
-                  <Button onClick={() => handleDelete(project.id)}><Trash /> Delete</Button>
+              <TableRow key={project.projectid} className="bg-card hover:bg-primary/10 hover:text-primary-foreground">
+                <TableCell className="font-medium text-foreground">{project.projectid}</TableCell>
+                <TableCell className="text-foreground">{project.projectname}</TableCell>
+                <TableCell className="text-foreground">{project.duedate}</TableCell>
+                <TableCell className="text-foreground flex space-x-5 justify-center items-center">
+                  <Button onClick={() => handleEdit(project.projectid)} className="bg-primary flex text-primary-foreground hover:bg-primary-dark">
+                    <Edit /> Edit
+                  </Button>
+                  <Button onClick={() => handleDelete(project.projectid)} className="bg-destructive text-destructive-foreground hover:bg-destructive-dark">
+                    <Trash /> Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
           <TableFooter className='flex justify-center bg-transparent m-5'>
-            <Button className='flex justify-center items-center bg-primary text-primary-foreground' onClick={() => setFormVisible(true)}>
+            <Button className='flex justify-center items-center bg-primary text-primary-foreground hover:bg-primary-dark' onClick={() => setFormVisible(true)}>
               <Plus /> Add Project
             </Button>
           </TableFooter>
@@ -163,21 +142,21 @@ const ManagerProjects = () => {
                     id='projectname'
                     name='projectname'
                     type='text'
+                    className='mt-1 pl-3 pr-3 h-8 block w-full border-foreground bg-foreground/5 rounded-sm'
                     value={formData.projectname}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full border border-border rounded-md shadow-sm'
                     required
                   />
                 </div>
                 <div className='mb-4'>
-                  <label className='block text-sm font-medium text-muted-foreground' htmlFor='projectdescription'>Description</label>
-                  <textarea
+                  <label className='block text-sm font-medium text-muted-foreground' htmlFor='projectdescription'>Project Description</label>
+                  <input
                     id='projectdescription'
                     name='projectdescription'
+                    type='text'
+                    className='mt-1 pl-3 pr-3 h-8 block w-full border-foreground bg-foreground/5 rounded-sm'
                     value={formData.projectdescription}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full border border-border rounded-md shadow-sm'
-                    required
                   />
                 </div>
                 <div className='mb-4'>
@@ -186,15 +165,17 @@ const ManagerProjects = () => {
                     id='duedate'
                     name='duedate'
                     type='date'
+                    className='mt-1 pl-3 pr-3 h-8 block w-full border-foreground bg-foreground/5 rounded-sm'
                     value={formData.duedate}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full border border-border rounded-md shadow-sm'
                     required
                   />
                 </div>
-                <div className='flex justify-end'>
-                  <Button type='submit' className='mr-4 bg-primary text-primary-foreground'>Submit</Button>
-                  <Button type='button' onClick={() => setFormVisible(false)} variant='outline'>Cancel</Button>
+                <div className='flex justify-end space-x-2'>
+                  <Button type='button' className="hover:bg-red-500 bg-red-300 text-red-700"onClick={() => setFormVisible(false)} >Cancel</Button>
+                  <Button type='submit' className='bg-primary text-primary-foreground'>
+                    {formData.projectid ? 'Update Project' : 'Add Project'}
+                  </Button>
                 </div>
               </form>
             </div>
