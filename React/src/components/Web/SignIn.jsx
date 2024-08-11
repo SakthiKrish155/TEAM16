@@ -1,33 +1,70 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, KeyRound, Eye, EyeOff } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { authService } from '@/service/auth';
 
 const SignIn = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        if (!email || !password) {
-            toast.error('Please fill in all fields');
-            return;
+    const checkRedirect = async () => {
+        if (authService.getToken() != null && authService.isLoggedIn()) {
+            const userRole = authService.getUserRole();
+            if (userRole !== null) {
+                if (userRole === "Admin") {
+                    navigate('/admin/content');
+                } else if (userRole === 'PROJECTMANAGER') {
+                    navigate('/manager/content');
+                } else if (userRole === 'TEAMMEMBER') {
+                    navigate('/user/content');
+                } else {
+                    toast.error("Something went wrong")
+                }
+            }
         }
-        // Implement your login logic here
-        if (email === 'admin@gmail.com' && password === 'admin') {
-            toast.success('Login successful');
-            navigate('/admin/content');
-        } else if (email === 'test@gmail.com' && password === 'password') {
-            toast.success('Login successful');
-            navigate('/user/content');
-        } else {
-            toast.error('Invalid email or password');
+    }
+    useEffect(() => {
+        checkRedirect();
+    }, []);
+
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    const email = useRef(null)
+    const password = useRef(null)
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await authService.SignIn(email.current.value, password.current.value);
+            if (res.status === 200) {
+                authService.setToken(res.data);
+                toast.success("Hello again!!");
+                setTimeout(() => {
+                    checkRedirect();
+                }, 3000);
+            } else {
+                toast.error('Invalid email or password');
+            }
+        } catch (error) {
+            console.error('Login Error:', error);
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+                console.error('Response status:', error.response.status);
+                console.error('Response headers:', error.response.headers);
+                toast.error(`Login failed: ${error.response.data.message || 'An error occurred'}`);
+            } else if (error.request) {
+                console.error('Request data:', error.request);
+                toast.error('No response from server');
+            } else {
+                console.error('Error message:', error.message);
+                toast.error('Error in setting up request');
+            }
         }
     };
+
     return (
         <div className='h-screen w-screen flex justify-center items-center'>
             <ToastContainer />
@@ -40,8 +77,9 @@ const SignIn = () => {
                             type="email"
                             placeholder="Your Email"
                             className='text-xl cursor-default placeholder:text-base block w-72 py-2.3 px-0 text-foreground bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-foreground focus:border-foreground peer'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            // value={email}
+                            // onChange={(e) => setEmail(e.target.value)}
+                            ref={email}
                         />
                     </div>
                     <div className='flex justify-between relative my-8'>
@@ -50,8 +88,9 @@ const SignIn = () => {
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
                             className='text-xl cursor-default placeholder:text-base block w-72 py-2.3 px-0 text-foreground bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:text-foreground focus:border-foreground peer'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            // value={password}
+                            // onChange={(e) => setPassword(e.target.value)}
+                            ref={password}
                         />
                         <button
                             type="button"

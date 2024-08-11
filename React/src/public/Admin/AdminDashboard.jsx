@@ -44,40 +44,22 @@ const AdminDashboard = () => {
         <hr className="my-3" />
       </div>
       <div className='w-full flex flex-col justify-center items-center'>
-        {/* <div className='p-0 m-0 w-full flex flex-row justify-between items-center gap-3'> */}
-        {/* <div className='w-2/3 flex justify-center items-center'>
-            <Button className="bg-background hover:bg-transparent font-bold flex items-center justify-center">
-              <span className="text-foreground flex items-center justify-center">
-                <CircleHelp />
-              </span>
-            </Button>
-          </div> */}
-        <div>
-          {/* <Link to="/" className="w-1/3">
-              <Button className="bg-background hover:bg-transparent font-bold flex items-center justify-center">
-                <span className="text-red-500 flex items-center justify-center">
-                  <Power size={20} />
-                </span>
-              </Button>
-            </Link> */}
-          <div className='h-[8vh] w-full flex justify-center items-center gap-9'>
-            <div className='w-full h-full flex items-center justify-start'>
-              {/* <Skeleton className="w-[100px] h-[20px] rounded-full" />*/}
-              <div class="flex items-center gap-4">
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                  <AvatarFallback >AD</AvatarFallback>
-                </Avatar>
-                <div class="font-medium text-primary">
-                  <div>Jese Leos</div>
-                </div>
+        <div className='h-[8vh] w-95% flex justify-center items-center gap-7'>
+          <div className='w-full h-full flex items-center justify-start'>
+            <div className="flex items-center gap-4">
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarFallback>AD</AvatarFallback>
+              </Avatar>
+              <div className="font-medium text-primary">
+                <div>Jese Leos</div>
               </div>
             </div>
-            <ModeToggle />
           </div>
+          <ModeToggle />
         </div>
-        {/* </div> */}
       </div>
+      {/* </div> */}
     </div>
   )
 }
