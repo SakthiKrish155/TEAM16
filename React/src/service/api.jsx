@@ -40,6 +40,7 @@ const deleteProject = (projectId) => axiosInstance.delete(`/projects/delete/${pr
 
 
 const getUserById = (userId) => axiosInstance.get(`/users/auth/findById/${userId}`);
+const getUsers = (userId) => axiosInstance.get('/users/auth/findAll');
 const deleteUserById = (userId) => axiosInstance.delete(`/users/auth/delete/${userId}`);
 const updateUserById = (userId, userData) => axiosInstance.put(`/users/auth/update/${userId}`, userData);
 const updateSpecificUserById = (userId, updateData) => axiosInstance.put(`/users/auth/updateSpecific/${userId}`, updateData);
@@ -52,7 +53,9 @@ const updateTask = (taskId, task) => axiosInstance.put(`/tasks/update/${taskId}`
 const patchTask = (taskId, updateData) => axiosInstance.patch(`/tasks/updateSpecific/${taskId}`, updateData);
 const deleteTask = (taskId) => axiosInstance.delete(`/tasks/delete/${taskId}`);
 
-export { axiosInstance, SignUpManager, SignUpMember, 
-    getProjects, getProjectById, addProject, updateProject, deleteProject, 
-    getUserById, deleteUserById, updateUserById, updateSpecificUserById ,
-    getTasks, getTaskById, addTask, updateTask, patchTask, deleteTask}
+export {
+    axiosInstance, SignUpManager, SignUpMember,
+    getProjects, getProjectById, addProject, updateProject, deleteProject,
+    getUsers, getUserById, deleteUserById, updateUserById, updateSpecificUserById,
+    getTasks, getTaskById, addTask, updateTask, patchTask, deleteTask
+}
