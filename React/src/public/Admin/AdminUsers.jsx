@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -13,42 +13,71 @@ import { Button } from '@/components/ui/button';
 import { Plus, Trash } from 'lucide-react';
 import { toast } from 'sonner';
 import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover';
-
-
-const userData = [
-  { id: "U001", name: "Alex Volkov", designation: "Software Engineer", email: "volkov@gmail.com", phone: "+1234567890" },
-  { id: "U002", name: "Rhys Larsen", designation: "Product Manager", email: "larsen@gmail.com", phone: "+0987654321" },
-  { id: "U003", name: "Christian Harper", designation: "UX Designer", email: "harper@gmail.com", phone: "+1122334455" },
-];
+import { deleteUserById, getUsers, SignUpMember } from '@/service/api';
+ 
 
 const AdminUsers = () => {
   const [isFormVisible, setFormVisible] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [formData, setFormData] = useState({
+    userid:"",
     name: "",
-    designation: "",
+    role: "",
     email: "",
-    phone: "",
+    contact: "",
   });
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // Fetch users from backend when component mounts
+    const fetchUsers = async () => {
+      try {
+        const response = await getUsers();
+        setUsers(response.data); // Assuming response.data contains the user data
+      } catch (error) {
+        console.error("Failed to fetch users", error);
+      }
+    };
+    
+    fetchUsers();
+  }, []);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
-    setFormVisible(false); // Hide form after submission
-    toast.success("User added successfully!");
+    try {
+      await SignUpMember(formData.name, formData.email, 'password', formData.contact, formData.role); // Add role as needed
+      setFormVisible(false);
+      setFormData({name: "", role: "", email: "", contact: "" });
+      toast.success("User added successfully!");
+      
+      // Refresh user list
+      const response = await getUsers();
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Failed to add user", error);
+      toast.error("Failed to add user.");
+    }
   };
 
-  const handleDeleteUser = () => {
+  const handleDeleteUser = async () => {
     if (userToDelete) {
-      // Handle user deletion
-      console.log("Deleting user with ID:", userToDelete);
-      setUserToDelete(null);
-      toast.success("User deleted successfully!");
+      try {
+        await deleteUserById(userToDelete);
+        setUserToDelete(null);
+        toast.success("User deleted successfully!");
+        
+        // Refresh user list
+        const response = await getUsers();
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Failed to delete user", error);
+        toast.error("Failed to delete user.");
+      }
     }
   };
 
@@ -56,32 +85,32 @@ const AdminUsers = () => {
     <div className='h-full w-full flex justify-center items-center'>
       <div className='w-[90%] max-w-7xl bg-card text-card-foreground shadow-lg rounded-lg'>
         <Table>
-          <TableCaption className="bg-secondary text-secondary-foreground">User Details Overview</TableCaption>
+          <TableCaption className="bg-secondary text-secondary-foreground">Application users</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[120px] bg-primary text-primary-foreground">User ID</TableHead>
               <TableHead className="bg-primary text-primary-foreground">Name</TableHead>
-              <TableHead className="bg-primary text-primary-foreground">Designation</TableHead>
+              <TableHead className="bg-primary text-primary-foreground">Role</TableHead>
               <TableHead className="bg-primary text-primary-foreground">Email</TableHead>
-              <TableHead className="bg-primary text-primary-foreground">Phone</TableHead>
+              <TableHead className="bg-primary text-primary-foreground">Contact</TableHead>
               <TableHead className="text-right bg-primary text-primary-foreground">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {userData.map((user) => (
+            {users.map((user) => (
               <TableRow key={user.id} className="bg-card">
-                <TableCell className="font-medium text-foreground">{user.id}</TableCell>
+                <TableCell className="font-medium text-foreground">{user.userid}</TableCell>
                 <TableCell className="text-foreground">{user.name}</TableCell>
-                <TableCell className="text-foreground">{user.designation}</TableCell>
+                <TableCell className="text-foreground">{user.role}</TableCell>
                 <TableCell className="text-foreground">{user.email}</TableCell>
-                <TableCell className="text-foreground">{user.phone}</TableCell>
+                <TableCell className="text-foreground">{user.contact}</TableCell>
                 <TableCell className="text-right">
                   <Popover>
                     <PopoverTrigger>
                       <Button
                         variant="outline"
                         className="mr-2"
-                        onClick={() => setUserToDelete(user.id)}
+                        onClick={() => setUserToDelete(user.userid)}
                       >
                         <Trash /> Delete
                       </Button>
@@ -92,10 +121,7 @@ const AdminUsers = () => {
                         <Button
                           className='mr-2'
                           variant='destructive'
-                          onClick={() => {
-                            handleDeleteUser();
-                            toast.success("User deleted successfully!");
-                          }}
+                          onClick={handleDeleteUser}
                         >
                           Confirm
                         </Button>
@@ -138,12 +164,12 @@ const AdminUsers = () => {
                   />
                 </div>
                 <div className='mb-4'>
-                  <label className='block text-sm font-medium text-foreground' htmlFor='designation'>Designation</label>
+                  <label className='block text-sm font-medium text-foreground' htmlFor='role'>Role</label>
                   <input
-                    id='designation'
-                    name='designation'
+                    id='role'
+                    name='role'
                     type='text'
-                    value={formData.designation}
+                    value={formData.role}
                     onChange={handleFormChange}
                     className='mt-1 block w-full border-input rounded-md shadow-sm'
                     required
@@ -162,12 +188,12 @@ const AdminUsers = () => {
                   />
                 </div>
                 <div className='mb-4'>
-                  <label className='block text-sm font-medium text-foreground' htmlFor='phone'>Phone Number</label>
+                  <label className='block text-sm font-medium text-foreground' htmlFor='contact'>Contact Number</label>
                   <input
-                    id='phone'
-                    name='phone'
+                    id='contact'
+                    name='contact'
                     type='tel'
-                    value={formData.phone}
+                    value={formData.contact}
                     onChange={handleFormChange}
                     className='mt-1 block w-full border-input rounded-md shadow-sm'
                     required
@@ -183,7 +209,6 @@ const AdminUsers = () => {
         )}
       </div>
     </div>
-
   );
 };
 

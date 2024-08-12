@@ -5,7 +5,7 @@ const Manager = () => {
   return (
     <div className="flex flex-col items-center p-6">
       <header className="w-full flex flex-col items-center mb-8">
-        <h1 className="text-3xl font-bold text-primary mb-4">Welcome, Jese Leos!</h1>
+        <h1 className="text-3xl font-bold text-primary mb-4">Welcome, User!</h1>
         <p className="text-lg text-foreground text-center">
           As a Project Manager, you play a crucial role in overseeing projects, assigning tasks, and ensuring team productivity.
         </p>

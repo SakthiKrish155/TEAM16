@@ -22,34 +22,11 @@ const ManagerTasks = () => {
     taskdescription: "",
     taskpriority: "Low",
     taskstatus: "Pending",
-    assignedto: "", // Stores the selected user id
-    projectid: ""   // Stores the selected project id
+    assignedto: "",
+    projectid: ""
   });
   const [users, setUsers] = useState([]);
   const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [tasksData, usersData, projectsData] = await Promise.all([
-          getTasks(),
-          getUsers(),
-          getProjects(),
-        ]);
-        setTasks(tasksData.data);
-        setUsers(usersData.data);
-        setProjects(projectsData.data);
-        console.log(projectsData.data);
-        console.log(usersData.data);
-        console.log(formData.data);
-        console.log(tasksData.data);
-      } catch (error) {
-        console.error("Error fetching data:", error.response?.data || error.message || error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -58,22 +35,22 @@ const ManagerTasks = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    
+    const taskData = {
+      taskname: formData.taskname,
+      taskdescription: formData.taskdescription,
+      taskpriority: formData.taskpriority,
+      taskstatus: formData.taskstatus,
+      assignedto: parseInt(formData.assignedto),
+      projectid: parseInt(formData.projectid)
+    };
+
     try {
-      const taskData = {
-        taskname: formData.taskname,
-        taskdescription: formData.taskdescription,
-        taskpriority: formData.taskpriority,
-        taskstatus: formData.taskstatus,
-        assignedto: formData.assignedto,
-        projectid: formData.projectid
-      };
-
       if (formData.taskid) {
-        await updateTask(formData.taskid, taskData); // Include taskid, assignedto, and projectid
+        await updateTask(formData.taskid, taskData);
       } else {
-        await addTask(taskData); // Include assignedto and projectid
+        await addTask(taskData);
       }
-
       const tasksData = await getTasks();
       setTasks(tasksData.data);
       setFormVisible(false);
@@ -89,11 +66,11 @@ const ManagerTasks = () => {
     } catch (error) {
       console.error("Error submitting form:", error.response?.data || error.message || error);
     }
-};
-
+  };
 
   const handleDelete = async (taskId) => {
     try {
+      console.log("DeleteId" + taskId);
       await deleteTask(taskId);
       const tasksData = await getTasks();
       setTasks(tasksData.data);
@@ -104,6 +81,7 @@ const ManagerTasks = () => {
 
   const handleEdit = async (taskId) => {
     try {
+      console.log("Edit Id" + taskId);
       const taskData = await getTaskById(taskId);
       const task = taskData.data;
       setFormData({
@@ -112,8 +90,8 @@ const ManagerTasks = () => {
         taskdescription: task.taskdescription,
         taskpriority: task.taskpriority,
         taskstatus: task.taskstatus,
-        assignedto: task.assignedto, // Ensure default value if undefined
-        projectid: task.projectid// Ensure default value if undefined
+        assignedto: task.assignedto ,
+        projectid: task.projectid 
       });
       setFormVisible(true);
     } catch (error) {
@@ -121,16 +99,24 @@ const ManagerTasks = () => {
     }
   };
 
-  // const getUserName = (userId) => {
-  //   if (userId)
-  //     return users.find((user) => user.userid === userId);
-  // };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [tasksData, usersData, projectsData] = await Promise.all([
+          getTasks(),
+          getUsers(),
+          getProjects(),
+        ]);
+        setTasks(tasksData.data);
+        setUsers(usersData.data);
+        setProjects(projectsData.data);
+      } catch (error) {
+        console.error("Error fetching data:", error.response?.data || error.message || error);
+      }
+    };
 
-  // const getProjectName = (projectId) => {
-  //   if (!projectId) return 'Unknown';
-  //   const project = projects.find((project) => project.projectid === projectId);
-  //   return project ? project.projectname : 'Unknown';
-  // };
+    fetchData();
+  }, []);
 
   return (
     <div className='h-full w-full flex justify-center items-center p-7'>
@@ -157,8 +143,8 @@ const ManagerTasks = () => {
                 <TableCell className="text-foreground">{task.taskdescription}</TableCell>
                 <TableCell className="text-foreground">{task.taskpriority}</TableCell>
                 <TableCell className="text-foreground">{task.taskstatus}</TableCell>
-                <TableCell className="text-foreground">{task.assignedto}</TableCell>
-                <TableCell className="text-foreground">{task.projectid}</TableCell>
+                <TableCell className="text-foreground">{task.member ? task.member.name : 'Unknown'}</TableCell>
+                <TableCell className="text-foreground">{task.project ? task.project.projectname : 'Unknown'}</TableCell>
                 <TableCell className="text-foreground flex space-x-5 justify-center items-center">
                   <Button onClick={() => handleEdit(task.taskid)} className="bg-primary flex text-primary-foreground hover:bg-primary-dark">
                     <Edit /> Edit
@@ -212,9 +198,9 @@ const ManagerTasks = () => {
                     onChange={handleFormChange}
                     className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
+                    <option value='Low'>Low</option>
+                    <option value='Medium'>Medium</option>
+                    <option value='High'>High</option>
                   </select>
                 </div>
                 <div className='mb-4'>
@@ -226,9 +212,9 @@ const ManagerTasks = () => {
                     onChange={handleFormChange}
                     className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
-                    <option value="Pending">Pending</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Completed">Completed</option>
+                    <option value='Pending'>Pending</option>
+                    <option value='In Progress'>In Progress</option>
+                    <option value='Completed'>Completed</option>
                   </select>
                 </div>
                 <div className='mb-4'>
@@ -240,16 +226,14 @@ const ManagerTasks = () => {
                     onChange={handleFormChange}
                     className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
-                    <option value="">Select a user</option>
-                    {users.map((user) => (
-                      <option key={user.userid} value={user.userid}>
-                        {user.name}
-                      </option>
+                    <option value=''>Select User</option>
+                    {users.map(user => (
+                      <option key={user.userid} value={user.userid}>{user.name}</option>
                     ))}
                   </select>
                 </div>
                 <div className='mb-4'>
-                  <label className='block text-sm font-medium text-muted-foreground' htmlFor='projectid'>Project Name</label>
+                  <label className='block text-sm font-medium text-muted-foreground' htmlFor='projectid'>Project</label>
                   <select
                     id='projectid'
                     name='projectid'
@@ -257,33 +241,17 @@ const ManagerTasks = () => {
                     onChange={handleFormChange}
                     className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
-                    <option value="">Select a project</option>
-                    {projects.map((project) => (
-                      <option key={project.projectid} value={project.projectid}>
-                        {project.projectname}
-                      </option>
+                    <option value=''>Select Project</option>
+                    {projects.map(project => (
+                      <option key={project.projectid} value={project.projectid}>{project.projectname}</option>
                     ))}
                   </select>
                 </div>
-                <div className='flex justify-end space-x-4'>
-                  <Button type='submit' className='bg-primary text-primary-foreground hover:bg-primary-dark'>
-                    Save
+                <div className='flex justify-end'>
+                  <Button type='submit' className='bg-primary text-primary-foreground hover:bg-primary-dark mr-4'>
+                    Save Changes
                   </Button>
-                  <Button
-                    onClick={() => {
-                      setFormVisible(false);
-                      setFormData({
-                        taskid: "",
-                        taskname: "",
-                        taskdescription: "",
-                        taskpriority: "Low",
-                        taskstatus: "Pending",
-                        assignedto: "",
-                        projectid: ""
-                      });
-                    }}
-                    className='bg-muted text-muted-foreground hover:bg-muted-dark'
-                  >
+                  <Button type='button' onClick={() => setFormVisible(false)} className='bg-destructive text-destructive-foreground hover:bg-destructive-dark'>
                     Cancel
                   </Button>
                 </div>

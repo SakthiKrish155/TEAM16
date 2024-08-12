@@ -4,21 +4,23 @@ import { Input } from '@/components/ui/input';
 import { FaUser, FaEnvelope, FaLock, FaQuestionCircle, FaSignOutAlt, FaTrashAlt, FaSave, FaEdit } from 'react-icons/fa';
 import { authService } from '@/service/auth';
 import { getUserById, deleteUserById, updateUserById } from '@/service/api';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate
 
 const ManagerSettings = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [contact, setContact] = useState('');  // Add state for contact
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [userId, setUserId] = useState(null); 
+  const navigate = useNavigate();  // Initialize useNavigate
 
   useEffect(() => {
-    
     const fetchUserId = async () => {
       try {
         const user = await authService.getCurrentUser(); 
-        setUserId(user.id);
+        setUserId(user.userid);
       } catch (error) {
         console.error('Failed to fetch user ID:', error);
       }
@@ -35,6 +37,7 @@ const ManagerSettings = () => {
           const userData = response.data;
           setUsername(userData.username);
           setEmail(userData.email);
+          setContact(userData.contact);  // Set contact value
         } catch (error) {
           console.error('Failed to fetch user data:', error);
         }
@@ -46,7 +49,7 @@ const ManagerSettings = () => {
 
   const handleSave = async () => {
     try {
-      const updatedData = { username, email, newPassword };
+      const updatedData = { username, email, contact, newPassword };  // Include contact
       await updateUserById(userId, updatedData);
       setIsEditing(false);
     } catch (error) {
@@ -58,7 +61,7 @@ const ManagerSettings = () => {
     try {
       await deleteUserById(userId);
       authService.SignOut();
-      window.location.href = '/';
+      navigate('/');  // Use navigate instead of window.location.href
     } catch (error) {
       console.error('Failed to delete user account:', error);
     }
@@ -66,11 +69,11 @@ const ManagerSettings = () => {
 
   const handleLogout = () => {
     authService.SignOut();
-    window.location.href = '/';
+    navigate('/');  // Use navigate instead of window.location.href
   };
 
   const handleViewHelp = () => {
-    window.location.href = '/help';
+    navigate('/help');  // Use navigate instead of window.location.href
   };
 
   return (
@@ -117,6 +120,18 @@ const ManagerSettings = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
+              className="flex-1"
+              disabled={!isEditing}
+            />
+          </label>
+          <label className="flex items-center mb-4">
+            <FaUser className="text-gray-500 mr-2" />  {/* Use FaUser for contact */}
+            <Input
+              label="Contact"
+              type="tel"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              placeholder="Enter your contact number"
               className="flex-1"
               disabled={!isEditing}
             />
