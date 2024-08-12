@@ -37,8 +37,8 @@ const SignUp = () => {
                 const res = await SignUpManager(
                     registerdata.name,
                     registerdata.email,
-                    registerdata.contact,
                     registerdata.password,
+                    registerdata.contact,
                     "PROJECTMANAGER"
                 );
                 console.log('Project Manager Response:', res.data);
@@ -52,8 +52,8 @@ const SignUp = () => {
                 const res = await SignUpMember(
                     registerdata.name,
                     registerdata.email,
-                    registerdata.contact,
                     registerdata.password,
+                    registerdata.contact,
                     "TEAMMEMBER"
                 );
                 console.log('Team Member Response:', res.data);

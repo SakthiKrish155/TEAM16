@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
 import { Plus, Edit, Trash } from 'lucide-react';
-import { getTasks, getTaskById, addTask, updateTask, deleteTask, getUsers, getProjects } from '@/service/api';
+import { getTasks, getTaskById, addTask, patchTask, deleteTask, getUsers, getProjects } from '@/service/api';
 
 const ManagerTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -47,7 +47,7 @@ const ManagerTasks = () => {
 
     try {
       if (formData.taskid) {
-        await updateTask(formData.taskid, taskData);
+        await patchTask(formData.taskid, taskData);
       } else {
         await addTask(taskData);
       }
@@ -83,7 +83,10 @@ const ManagerTasks = () => {
     try {
       console.log("Edit Id" + taskId);
       const taskData = await getTaskById(taskId);
+      console.log(taskData);
       const task = taskData.data;
+      console.log(task);
+
       setFormData({
         taskid: task.taskid,
         taskname: task.taskname,
@@ -143,8 +146,8 @@ const ManagerTasks = () => {
                 <TableCell className="text-foreground">{task.taskdescription}</TableCell>
                 <TableCell className="text-foreground">{task.taskpriority}</TableCell>
                 <TableCell className="text-foreground">{task.taskstatus}</TableCell>
-                <TableCell className="text-foreground">{task.member ? task.member.name : 'Unknown'}</TableCell>
-                <TableCell className="text-foreground">{task.project ? task.project.projectname : 'Unknown'}</TableCell>
+                <TableCell className="text-foreground">{task.member.name}</TableCell>
+                <TableCell className="text-foreground">{task.project.projectname}</TableCell>
                 <TableCell className="text-foreground flex space-x-5 justify-center items-center">
                   <Button onClick={() => handleEdit(task.taskid)} className="bg-primary flex text-primary-foreground hover:bg-primary-dark">
                     <Edit /> Edit

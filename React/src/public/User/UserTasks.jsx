@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode'; // Ensure you import jwtDecode correctly
 import {
   Table,
   TableBody,
@@ -10,32 +10,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
-import { getTasks, updateTask, getUsers, getProjects } from '@/service/api';
+import { getUserTasks, updateTask, getUserIdFromEmail, patchTask, patchUserTask } from '@/service/api'; // Import necessary functions
 
-const ManagerTasks = () => {
+const UserTasks = () => {
   const [tasks, setTasks] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [projects, setProjects] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [email, setEmail] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Decode JWT token to get the current user's ID  
         const token = localStorage.getItem('token');
         if (token) {
           const decodedToken = jwtDecode(token);
-          setUserId(decodedToken.sub); // Assuming 'sub' is the user ID
-        }
+          const currentUserEmail = decodedToken.sub; // Get email from token
+          setEmail(currentUserEmail);
 
-        const [tasksData, usersData, projectsData] = await Promise.all([
-          getTasks(),
-          getUsers(),
-          getProjects(),
-        ]);
-        setTasks(tasksData.data);
-        setUsers(usersData.data);
-        setProjects(projectsData.data);
+          // Fetch user ID based on email
+          const userIdResponse = await getUserIdFromEmail(currentUserEmail);
+          setUserId(userIdResponse);
+
+          // Fetch tasks for the user
+          const tasksResponse = await getUserTasks(userIdResponse);
+          setTasks(tasksResponse);
+        }
       } catch (error) {
         console.error("Error fetching data:", error.response?.data || error.message || error);
       }
@@ -44,23 +42,13 @@ const ManagerTasks = () => {
     fetchData();
   }, []);
 
-  const filteredTasks = tasks.filter(task => task.assignedto === userId);
-
-  const handlePriorityChange = async (taskId, newPriority) => {
-    try {
-      await updateTask(taskId, { taskpriority: newPriority });
-      const updatedTasks = tasks.map(task =>
-        task.taskid === taskId ? { ...task, taskpriority: newPriority } : task
-      );
-      setTasks(updatedTasks);
-    } catch (error) {
-      console.error("Error updating task priority:", error.response?.data || error.message || error);
-    }
-  };
-
   const handleStatusChange = async (taskId, newStatus) => {
     try {
-      await updateTask(taskId, { taskstatus: newStatus });
+      // Update task status in the backend
+      console.log(taskId  + " " + newStatus);
+      await patchUserTask(taskId, { taskstatus: newStatus });
+
+      // Update task status in the state
       const updatedTasks = tasks.map(task =>
         task.taskid === taskId ? { ...task, taskstatus: newStatus } : task
       );
@@ -86,22 +74,12 @@ const ManagerTasks = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredTasks.map((task) => (
+            {tasks.map((task) => (
               <TableRow key={task.taskid} className="bg-card hover:bg-primary/10 hover:text-primary-foreground">
                 <TableCell className="font-medium text-foreground">{task.taskid}</TableCell>
                 <TableCell className="text-foreground">{task.taskname}</TableCell>
                 <TableCell className="text-foreground">{task.taskdescription}</TableCell>
-                <TableCell className="text-foreground">
-                  <select
-                    value={task.taskpriority}
-                    onChange={(e) => handlePriorityChange(task.taskid, e.target.value)}
-                    className='px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
-                  >
-                    <option value='Low'>Low</option>
-                    <option value='Medium'>Medium</option>
-                    <option value='High'>High</option>
-                  </select>
-                </TableCell>
+                <TableCell className="text-foreground">{task.taskpriority}</TableCell>
                 <TableCell className="text-foreground">
                   <select
                     value={task.taskstatus}
@@ -113,7 +91,7 @@ const ManagerTasks = () => {
                     <option value='Completed'>Completed</option>
                   </select>
                 </TableCell>
-                <TableCell className="text-foreground">{<task className="projectid"></task> ? task.project.projectname : 'Unknown'}</TableCell>
+                <TableCell className="text-foreground">{task.project?.projectname || 'Unknown'}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -123,4 +101,4 @@ const ManagerTasks = () => {
   );
 };
 
-export default ManagerTasks;
+export default UserTasks;
