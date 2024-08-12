@@ -1,79 +1,75 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { FaStar, FaRegStar } from 'react-icons/fa'; // Assuming you're using react-icons
+import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { getUserTasks, getUserIdFromEmail } from '@/service/api';
 
 const UserCompleted = () => {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      name: 'Design Homepage',
-      dueDate: '2024-08-01',
-      important: true,
-      assignedBy: 'John Doe',
-      status: 'Completed',
-    },
-    {
-      id: 2,
-      name: 'Develop API',
-      dueDate: '2024-08-05',
-      important: false,
-      assignedBy: 'Jane Smith',
-      status: 'Completed',
-    },
-    {
-      id: 3,
-      name: 'Testing and QA',
-      dueDate: '2024-08-10',
-      important: true,
-      assignedBy: 'Alex Johnson',
-      status: 'Completed',
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [email, setEmail] = useState(null);
 
-  // Filter tasks to show only completed tasks
-  const completedTasks = tasks.filter(task => task.status === 'Completed');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          const currentUserEmail = decodedToken.sub; 
+          setEmail(currentUserEmail);
 
-  const toggleImportant = (taskId) => {
-    setTasks(tasks.map(task => 
-      task.id === taskId ? { ...task, important: !task.important } : task
-    ));
-  };
+          const userIdResponse = await getUserIdFromEmail(currentUserEmail);
+          setUserId(userIdResponse);
+
+          const tasksResponse = await getUserTasks(userIdResponse);
+
+          // Filter tasks to show only completed tasks
+          const completedTasks = tasksResponse.filter(task => task.taskstatus === 'Completed');
+          setTasks(completedTasks);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error.response?.data || error.message || error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-8 text-center" style={{ fontFamily: "'Open Sans', sans-serif" }}>
-        Completed Tasks
-      </h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg border border-gray-200">
-          <thead>
-            <tr className="bg-blue-900 text-white text-left">
-              <th className="p-4">Task Name</th>
-              <th className="p-4">Due Date</th>
-              <th className="p-4">Important</th>
-              <th className="p-4">Assigned By</th>
-              <th className="p-4">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {completedTasks.map(task => (
-              <tr key={task.id} className="border-t hover:bg-gray-50">
-                <td className="p-4 text-gray-800">{task.name}</td>
-                <td className="p-4 text-gray-600">{task.dueDate}</td>
-                <td className="p-4">
-                  <Button
-                    onClick={() => toggleImportant(task.id)}
-                    className={`flex items-center justify-center p-2 rounded-full ${task.important ? 'bg-yellow-500 text-white' : 'bg-gray-200 text-gray-600'}`}
-                  >
-                    {task.important ? <FaStar /> : <FaRegStar />}
-                  </Button>
-                </td>
-                <td className="p-4 text-gray-800">{task.assignedBy}</td>
-                <td className="p-4 text-gray-800">{task.status}</td>
-              </tr>
+    <div className='h-full w-full flex justify-center items-center p-7'>
+      <div className='w-[90%] max-w-7xl bg-card text-card-foreground shadow-lg rounded-lg'>
+        <Table>
+          <TableCaption className="bg-muted text-muted-foreground">Completed</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[120px] bg-primary text-primary-foreground">Task ID</TableHead>
+              <TableHead className="bg-primary text-primary-foreground">Task Name</TableHead>
+              <TableHead className="bg-primary text-primary-foreground">Task Description</TableHead>
+              <TableHead className="bg-primary text-primary-foreground">Priority</TableHead>
+              <TableHead className="bg-primary text-primary-foreground">Status</TableHead>
+              <TableHead className="bg-primary text-primary-foreground">Project Name</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {tasks.map((task) => (
+              <TableRow key={task.taskid} className="bg-card hover:bg-primary/10 hover:text-primary-foreground">
+                <TableCell className="font-medium text-foreground">{task.taskid}</TableCell>
+                <TableCell className="text-foreground">{task.taskname}</TableCell>
+                <TableCell className="text-foreground">{task.taskdescription}</TableCell>
+                <TableCell className="text-foreground">{task.taskpriority}</TableCell>
+                <TableCell className="text-foreground">{task.taskstatus}</TableCell>
+                <TableCell className="text-foreground">{task.project?.projectname || 'Unknown'}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
