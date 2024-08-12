@@ -44,7 +44,7 @@ const SignIn = () => {
                 toast.success("Hello again!!");
                 setTimeout(() => {
                     checkRedirect();
-                }, 3000);
+                }, 1500);
             } else {
                 toast.error('Invalid email or password');
             }

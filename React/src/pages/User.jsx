@@ -1,15 +1,18 @@
 import React from 'react';
 import { Button } from '@/components/ui/button'; // Assuming you're using your Button component
+import { Link } from 'react-router-dom';
 
 const User = () => {
   return (
-    <div className="min-h-screen bg-primary/5">     
+    <div className="min-h-screen bg-primary/5">
       <section className="bg-primary/80 text-white py-20">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold" style={{ fontFamily: 'IM Fell English, serif' }}>Optimize Your Workflow</h1>
-          <p className="text-3xl mt-4" style={{fontFamily: 'IM Fell English, serif' }}>Efficient task and time management for professionals.</p>
+          <p className="text-3xl mt-4" style={{ fontFamily: 'IM Fell English, serif' }}>Efficient task and time management for professionals.</p>
           <div className="mt-6">
-            <Button className="bg-transparent border border-white text-white mr-4">Get Started</Button>
+            <Link to='/user/alltasks'>
+              <Button className="bg-transparent border border-white text-white mr-4">Get Started</Button>
+            </Link>
             <Button className="bg-transparent border border-white text-white">Learn More</Button>
           </div>
         </div>
@@ -17,7 +20,7 @@ const User = () => {
 
       <section className="py-20">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-10" style={{ fontFamily:"'IM English'"}}>Features</h2>
+          <h2 className="text-3xl font-bold mb-10" style={{ fontFamily: "'IM English'" }}>Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { title: 'Easy Task Tracking', description: 'View all your tasks in one place with clear deadlines and priorities.' },
@@ -52,7 +55,7 @@ const User = () => {
         </div>
       </section>
 
-     
+
     </div>
   );
 };

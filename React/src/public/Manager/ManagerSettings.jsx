@@ -3,24 +3,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { FaUser, FaEnvelope, FaLock, FaQuestionCircle, FaSignOutAlt, FaTrashAlt, FaSave, FaEdit } from 'react-icons/fa';
 import { authService } from '@/service/auth';
-import { getUserById, deleteUserById, updateUserById } from '@/service/api';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import { getCurrentUserId, getUserById, deleteUserById, updateUserById,updateSpecificUserById, updateUser } from '@/service/api';
+import { useNavigate } from 'react-router-dom';
 
 const ManagerSettings = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [contact, setContact] = useState('');  // Add state for contact
+  const [contact, setContact] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const [userId, setUserId] = useState(null); 
-  const navigate = useNavigate();  // Initialize useNavigate
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const user = await authService.getCurrentUser(); 
-        setUserId(user.userid);
+        const id = await getCurrentUserId();
+        setUserId(id);
       } catch (error) {
         console.error('Failed to fetch user ID:', error);
       }
@@ -37,7 +37,7 @@ const ManagerSettings = () => {
           const userData = response.data;
           setUsername(userData.username);
           setEmail(userData.email);
-          setContact(userData.contact);  // Set contact value
+          setContact(userData.contact);
         } catch (error) {
           console.error('Failed to fetch user data:', error);
         }
@@ -49,8 +49,10 @@ const ManagerSettings = () => {
 
   const handleSave = async () => {
     try {
-      const updatedData = { username, email, contact, newPassword };  // Include contact
-      await updateUserById(userId, updatedData);
+      const updatedData = { username, email, contact, newPassword };
+      console.log(updatedData);
+      console.log("User ID" + userId);
+      await updateUser(userId, updatedData);
       setIsEditing(false);
     } catch (error) {
       console.error('Failed to update user data:', error);
@@ -58,22 +60,25 @@ const ManagerSettings = () => {
   };
 
   const handleDeleteAccount = async () => {
-    try {
-      await deleteUserById(userId);
-      authService.SignOut();
-      navigate('/');  // Use navigate instead of window.location.href
-    } catch (error) {
-      console.error('Failed to delete user account:', error);
+    const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+    if (confirmDelete) {
+      try {
+        await deleteUserById(userId);
+        authService.SignOut();
+        navigate('/');
+      } catch (error) {
+        console.error('Failed to delete user account:', error);
+      }
     }
   };
 
   const handleLogout = () => {
     authService.SignOut();
-    navigate('/');  // Use navigate instead of window.location.href
+    navigate('/');
   };
 
   const handleViewHelp = () => {
-    navigate('/help');  // Use navigate instead of window.location.href
+    navigate('/help');
   };
 
   return (
@@ -125,7 +130,7 @@ const ManagerSettings = () => {
             />
           </label>
           <label className="flex items-center mb-4">
-            <FaUser className="text-gray-500 mr-2" />  {/* Use FaUser for contact */}
+            <FaUser className="text-gray-500 mr-2" />
             <Input
               label="Contact"
               type="tel"

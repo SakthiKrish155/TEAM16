@@ -84,7 +84,7 @@ const UserImportant = () => {
                   <select
                     value={task.taskstatus}
                     onChange={(e) => handleStatusChange(task.taskid, e.target.value)}
-                    className='px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
+                    className='px-3 py-2 bg-background border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
                     <option value='Not Started'>Not Started</option>
                     <option value='In Progress'>In Progress</option>

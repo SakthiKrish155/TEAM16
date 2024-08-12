@@ -3,22 +3,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { FaUser, FaEnvelope, FaLock, FaQuestionCircle, FaSignOutAlt, FaTrashAlt, FaSave, FaEdit } from 'react-icons/fa';
 import { authService } from '@/service/auth';
-import { getUserById, deleteUserById, updateUserById } from '@/service/api';
+import { getCurrentUserId, getUserById, deleteUserById, updateUserById,updateSpecificUserById, updateUser } from '@/service/api';
+import { useNavigate } from 'react-router-dom';
 
 const UserSettings = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [contact, setContact] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const [userId, setUserId] = useState(null); 
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    
     const fetchUserId = async () => {
       try {
-        const user = await authService.getCurrentUser(); 
-        setUserId(user.id);
+        const id = await getCurrentUserId();
+        setUserId(id);
       } catch (error) {
         console.error('Failed to fetch user ID:', error);
       }
@@ -35,6 +37,7 @@ const UserSettings = () => {
           const userData = response.data;
           setUsername(userData.username);
           setEmail(userData.email);
+          setContact(userData.contact);
         } catch (error) {
           console.error('Failed to fetch user data:', error);
         }
@@ -46,8 +49,10 @@ const UserSettings = () => {
 
   const handleSave = async () => {
     try {
-      const updatedData = { username, email, newPassword };
-      await updateUserById(userId, updatedData);
+      const updatedData = { username, email, contact, newPassword };
+      console.log(updatedData);
+      console.log("User ID" + userId);
+      await updateUser(userId, updatedData);
       setIsEditing(false);
     } catch (error) {
       console.error('Failed to update user data:', error);
@@ -55,26 +60,29 @@ const UserSettings = () => {
   };
 
   const handleDeleteAccount = async () => {
-    try {
-      await deleteUserById(userId);
-      authService.SignOut();
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Failed to delete user account:', error);
+    const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+    if (confirmDelete) {
+      try {
+        await deleteUserById(userId);
+        authService.SignOut();
+        navigate('/');
+      } catch (error) {
+        console.error('Failed to delete user account:', error);
+      }
     }
   };
 
   const handleLogout = () => {
     authService.SignOut();
-    window.location.href = '/';
+    navigate('/');
   };
 
   const handleViewHelp = () => {
-    window.location.href = '/help';
+    navigate('/help');
   };
 
   return (
-    <div className='flex h-[80vh] mt-20 justify-center items-center'>
+    <div className='flex mt-10 justify-center items-center'>
       <div className="p-6 h-full w-5/6 bg-background text-foreground rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6">Settings</h1>
 
@@ -117,6 +125,18 @@ const UserSettings = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
+              className="flex-1"
+              disabled={!isEditing}
+            />
+          </label>
+          <label className="flex items-center mb-4">
+            <FaUser className="text-gray-500 mr-2" />
+            <Input
+              label="Contact"
+              type="tel"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              placeholder="Enter your contact number"
               className="flex-1"
               disabled={!isEditing}
             />

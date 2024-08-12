@@ -44,7 +44,7 @@ const AdminDashboard = () => {
         <hr className="my-3" />
       </div>
       <div className='w-full flex flex-col justify-center items-center'>
-        <div className='h-[8vh] w-95% flex justify-center items-center gap-7'>
+        <div className='h-[8vh] w-95% flex justify-center items-center gap-9'>
           <div className='w-full h-full flex items-center justify-start'>
             <div className="flex items-center gap-4">
               <Avatar>
@@ -52,7 +52,7 @@ const AdminDashboard = () => {
                 <AvatarFallback>AD</AvatarFallback>
               </Avatar>
               <div className="font-medium text-primary">
-                <div>Jese Leos</div>
+                <div>Admin</div>
               </div>
             </div>
           </div>

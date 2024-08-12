@@ -137,8 +137,8 @@ const AdminDashboard = () => {
         <CardContent>
           <form>
             <div className="mb-4">
-              <label htmlFor="support-message" className="block text-gray-700 mb-2">Submit a support request:</label>
-              <textarea id="support-message" rows="4" className="w-full p-2 border border-gray-300 rounded" />
+              <label htmlFor="support-message" className="block text-foreground/65 mb-2">Submit a support request:</label>
+              <textarea id="support-message" rows="4" className="w-full p-2 border bg-background border-gray-300 rounded" />
             </div>
             <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded flex items-center">
               <Send className="mr-2" />

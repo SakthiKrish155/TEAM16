@@ -179,7 +179,7 @@ const ManagerTasks = () => {
                     type='text'
                     value={formData.taskname}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
+                    className='mt-1 bg-background block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   />
                 </div>
                 <div className='mb-4'>
@@ -189,7 +189,7 @@ const ManagerTasks = () => {
                     name='taskdescription'
                     value={formData.taskdescription}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
+                    className='mt-1 bg-background block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   />
                 </div>
                 <div className='mb-4'>
@@ -199,7 +199,7 @@ const ManagerTasks = () => {
                     name='taskpriority'
                     value={formData.taskpriority}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
+                    className='mt-1 bg-background block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
                     <option value='Low'>Low</option>
                     <option value='Medium'>Medium</option>
@@ -213,7 +213,7 @@ const ManagerTasks = () => {
                     name='taskstatus'
                     value={formData.taskstatus}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
+                    className='mt-1 bg-background block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
                     <option value='Pending'>Pending</option>
                     <option value='In Progress'>In Progress</option>
@@ -227,7 +227,7 @@ const ManagerTasks = () => {
                     name='assignedto'
                     value={formData.assignedto}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
+                    className='mt-1 bg-background block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
                     <option value=''>Select User</option>
                     {users.map(user => (
@@ -242,7 +242,7 @@ const ManagerTasks = () => {
                     name='projectid'
                     value={formData.projectid}
                     onChange={handleFormChange}
-                    className='mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
+                    className='mt-1 bg-background block w-full px-3 py-2 border border-muted rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm'
                   >
                     <option value=''>Select Project</option>
                     {projects.map(project => (

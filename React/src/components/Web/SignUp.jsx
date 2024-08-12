@@ -65,7 +65,7 @@ const SignUp = () => {
             }
             setTimeout(() => {
                 navigate('/signIn');
-            }, 5000);
+            }, 3000);
         } catch (error) {
             console.error('Registration Error:', error);
             toast.error('An error occurred');

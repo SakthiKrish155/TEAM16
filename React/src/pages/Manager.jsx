@@ -5,7 +5,7 @@ const Manager = () => {
   return (
     <div className="flex flex-col items-center p-6">
       <header className="w-full flex flex-col items-center mb-8">
-        <h1 className="text-3xl font-bold text-primary mb-4">Welcome, User!</h1>
+        <h1 className="text-3xl font-bold text-primary mb-4">Welcome!!!</h1>
         <p className="text-lg text-foreground text-center">
           As a Project Manager, you play a crucial role in overseeing projects, assigning tasks, and ensuring team productivity.
         </p>
@@ -18,7 +18,7 @@ const Manager = () => {
             Create and manage projects to streamline your team's workflow. Assign tasks to team members, set deadlines, and track progress to ensure successful project completion.
           </p>
           <Link to="/manager/projects">
-            <button className="bg-foreground text-primary rounded px-4 py-2 hover:bg-primary hover:text-foreground hover:border border-foreground">
+            <button className="bg-background text-foreground rounded px-4 py-2 hover:text-xl hover:border border-foreground">
               Go to Projects
             </button>
           </Link>
@@ -30,7 +30,7 @@ const Manager = () => {
             Assign tasks to team members based on their skills and availability. Monitor task progress, make adjustments as needed, and ensure that all tasks are completed on time.
           </p>
           <Link to="/manager/tasks">
-          <button className="bg-foreground text-primary rounded px-4 py-2 hover:bg-primary hover:text-foreground hover:border border-foreground">
+          <button className="bg-background text-foreground rounded px-4 py-2 hover:text-xl hover:border border-foreground">
               Go to Tasks
             </button>
           </Link>

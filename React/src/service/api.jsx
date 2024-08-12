@@ -43,10 +43,19 @@ const deleteProject = (projectId) => axiosInstance.delete(`/projects/delete/${pr
 // CRUD operations for users
 const getUserById = (userId) => axiosInstance.get(`/users/auth/findById/${userId}`);
 const getUsers = () => axiosInstance.get('/users/auth/findAll');
+const getCurrentUserId = async () => {
+    try {
+        const response = await axiosInstance.get('/users/auth/current-id');
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching current user ID:", error);
+        throw error;
+    }
+};
 const deleteUserById = (userId) => axiosInstance.delete(`/users/auth/delete/${userId}`);
 const updateUserById = (userId, userData) => axiosInstance.put(`/users/auth/update/${userId}`, userData);
-const updateSpecificUserById = (userId, updateData) => axiosInstance.put(`/users/auth/updateSpecific/${userId}`, updateData);
-
+const updateSpecificUserById = (userId, updateData) => axiosInstance.patch(`/users/auth/updateSpecific/${userId}`, updateData);
+const updateUser = (userId,updateData) => axiosInstance.put(`/users/auth/${userId}`, updateData)
 // CRUD operations for tasks
 const getTasks = () => axiosInstance.get('/tasks/findAll');
 const getTaskById = (taskId) => axiosInstance.get(`/tasks/findById/${taskId}`);
@@ -80,6 +89,6 @@ const getUserIdFromEmail = async (email) => {
 export {
     axiosInstance, SignUpManager, SignUpMember,
     getProjects, getProjectById, addProject, updateProject, deleteProject,
-    getUsers, getUserById, deleteUserById, updateUserById, updateSpecificUserById,
+    getUsers, getUserById, deleteUserById, updateUserById, updateSpecificUserById, getCurrentUserId,updateUser,
     getTasks, getTaskById, addTask, updateTask, patchTask, deleteTask, getUserTasks, getUserIdFromEmail, patchUserTask
 }

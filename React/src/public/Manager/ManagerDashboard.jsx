@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import { ModeToggle } from '@/components/toggle-theme';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Home, Clipboard, User2Icon, Settings, UserCircle, HelpCircle, Power } from 'lucide-react';
+import { Home, Clipboard, User2Icon, Settings } from 'lucide-react';
 
 const ManagerDashboard = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const fetchUserName = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        setUserName(decodedToken.sub || 'User'); 
+      } else {
+        setUserName('User');
+      }
+    };
+
+    fetchUserName();
+  }, []);
 
   const AdminLinks = [
     {
@@ -48,7 +62,7 @@ const ManagerDashboard = () => {
         <hr className="my-3" />
       </div>
       <div className='w-full flex flex-col justify-center items-center'>
-        <div className='h-[8vh] w-95% flex justify-center items-center gap-7'>
+        <div className='h-[8vh] w-95% flex justify-center items-center'>
           <div className='w-full h-full flex items-center justify-start'>
             <div className="flex items-center gap-4">
               <Avatar>
@@ -56,7 +70,7 @@ const ManagerDashboard = () => {
                 <AvatarFallback>AD</AvatarFallback>
               </Avatar>
               <div className="font-medium text-primary">
-                <div>Jese Leos</div>
+                <div>{userName}</div> {/* Displaying user name */}
               </div>
             </div>
           </div>
