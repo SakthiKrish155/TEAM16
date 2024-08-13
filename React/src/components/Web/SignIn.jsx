@@ -13,7 +13,7 @@ const SignIn = () => {
         if (authService.getToken() != null && authService.isLoggedIn()) {
             const userRole = authService.getUserRole();
             if (userRole !== null) {
-                if (userRole === "Admin") {
+                if (userRole === "ADMIN") {
                     navigate('/admin/content');
                 } else if (userRole === 'PROJECTMANAGER') {
                     navigate('/manager/content');

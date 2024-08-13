@@ -2,6 +2,9 @@ import { ModeToggle } from '@/components/toggle-theme'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { authService } from '@/service/auth'
+import { icon } from '@fortawesome/fontawesome-svg-core'
+import { color } from 'framer-motion'
 import { CircleHelp, Home, Layers, LucideSettings, Power, Settings, Settings2, Settings2Icon, StickyNote, User2Icon, UserCircleIcon } from 'lucide-react'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
@@ -22,6 +25,10 @@ const AdminDashboard = () => {
       title: 'Settings',
       link: '/admin/settings',
       icon: Settings
+    },{
+      title:'Logout',
+      link:'/',
+      icon:Power
     }
   ]
 
@@ -44,7 +51,7 @@ const AdminDashboard = () => {
         <hr className="my-3" />
       </div>
       <div className='w-full flex flex-col justify-center items-center'>
-        <div className='h-[8vh] w-95% flex justify-center items-center gap-9'>
+        <div className='h-[8vh] w-95% flex justify-center items-center gap-5'>
           <div className='w-full h-full flex items-center justify-start'>
             <div className="flex items-center gap-4">
               <Avatar>

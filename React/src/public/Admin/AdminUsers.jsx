@@ -35,6 +35,7 @@ const AdminUsers = () => {
   const handleDeleteUser = async () => {
     if (userToDelete) {
       try {
+        console.log(userToDelete)
         await deleteUserById(userToDelete);
         setUserToDelete(null);
         toast.success("User deleted successfully!");
@@ -66,7 +67,7 @@ const AdminUsers = () => {
           </TableHeader>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.id} className="bg-card">
+              <TableRow key={user.userid} className="bg-card">
                 <TableCell className="font-medium text-foreground">{user.userid}</TableCell>
                 <TableCell className="text-foreground">{user.name}</TableCell>
                 <TableCell className="text-foreground">{user.role}</TableCell>
@@ -95,7 +96,7 @@ const AdminUsers = () => {
                         </Button>
                         <Button
                           variant='outline'
-                          onClick={() => setUserToDelete(null)}
+                          // onClick={() => setUserToDelete(null)}
                         >
                           Cancel
                         </Button>

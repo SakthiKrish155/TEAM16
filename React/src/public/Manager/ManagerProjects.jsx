@@ -102,6 +102,7 @@ const ManagerProjects = () => {
             <TableRow>
               <TableHead className="w-[120px] bg-primary text-primary-foreground">Project ID</TableHead>
               <TableHead className="bg-primary text-primary-foreground">Project Name</TableHead>
+              <TableHead className="bg-primary text-primary-foreground">Project Description</TableHead>
               <TableHead className="bg-primary text-primary-foreground">Due Date</TableHead>
               <TableHead className="bg-primary flex justify-center items-center text-primary-foreground">Actions</TableHead>
             </TableRow>
@@ -111,6 +112,7 @@ const ManagerProjects = () => {
               <TableRow key={project.projectid} className="bg-card hover:bg-primary/10 hover:text-primary-foreground">
                 <TableCell className="font-medium text-foreground">{project.projectid}</TableCell>
                 <TableCell className="text-foreground">{project.projectname}</TableCell>
+                <TableCell className="text-foreground">{project.projectdescription}</TableCell>
                 <TableCell className="text-foreground">{project.duedate}</TableCell>
                 <TableCell className="text-foreground flex space-x-5 justify-center items-center">
                   <Button onClick={() => handleEdit(project.projectid)} className="bg-primary flex text-primary-foreground hover:bg-primary-dark">
