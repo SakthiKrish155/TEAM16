@@ -2,6 +2,7 @@ package com.sdp.taskandtimemanager.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.HttpStatus.OK;
 import com.sdp.taskandtimemanager.auth.LoginRequest;
@@ -37,6 +39,16 @@ public class UsersController {
     @GetMapping("/findAll")
     public List<Users> findAll() {
         return service.findAllUsers();
+    }
+
+    @GetMapping("/current-id")
+    public Long getCurrentUserId() {
+        return service.getCurrentUserId();
+    }
+
+    @GetMapping("/mail")
+    public Long getUserByEmail(@RequestParam String email) {
+        return service.findByEmail(email);
     }
 
     @GetMapping("/findById/{userId}")
@@ -73,6 +85,16 @@ public class UsersController {
     @PatchMapping("/updateSpecific/{userId}")
     public Users patch(@PathVariable Long userId, @RequestBody Users user) {
         return service.patchUser(userId, user);
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Users> updateUser(@PathVariable Long userId, @RequestBody Users user) {
+        Users updatedUser = service.updateUser(userId, user);
+        if (updatedUser != null) {
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("delete/{userId}")

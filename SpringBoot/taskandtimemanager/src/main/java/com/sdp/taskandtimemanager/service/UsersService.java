@@ -7,9 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("null")
-public class UsersService{
+public class UsersService implements AuthService {
 
     @Autowired
     private UsersRepo repo;
@@ -35,12 +39,38 @@ public class UsersService{
     private final AuthenticationManager authenticationManager;
     private final JwtToken jwtUtil;
 
+    @Autowired
+    private BCryptPasswordEncoder bpasswordEncoder;
+
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String username = userDetails.getUsername(); // Assuming username is the email
+
+            // Retrieve the user entity from the repository
+            Users user = repo.findUserByEmail(username); // Adjust if you're using a different identifier
+            if (user != null) {
+                return user.getUserid(); // Return the user ID
+            }
+            throw new IllegalStateException("User not found");
+        }
+        throw new IllegalStateException("No authenticated user found");
+    }
+
     public List<Users> findAllUsers() {
         return repo.findAll();
     }
 
     public Users findUserById(Long userId) {
         return repo.findById(userId).orElse(null);
+    }
+
+    public Long findByEmail(String email) {
+        Users user = repo.findUserByEmail(email);
+        Long userid = user.getUserid();
+        return userid;
     }
 
     public String register(RegisterRequest registerRequest) {
@@ -77,42 +107,28 @@ public class UsersService{
         return "Project Manager registered successfully";
     }
 
-    // public String login(LoginRequest loginRequest) {
-    //     authenticationManager.authenticate(
-    //             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-    //     var user = repo.findByEmail(loginRequest.getEmail()).orElseThrow();
-    //     Map<String, Object> extraClaims = new HashMap<>();
-    //     extraClaims.put("role", user.getRole().toString());
-    //     var accessToken = jwtUtil.generateToken(extraClaims, user);
-    //     revokeAllUserTokens(user);
-    //     saveUserToken(user, accessToken);
-    //     return accessToken;
-    // }
 
     public String login(LoginRequest loginRequest) {
-    try {
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-    } catch (BadCredentialsException e) {
-        throw new RuntimeException("Invalid email or password");
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        var user = repo.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", user.getRole().toString());
+
+        String accessToken = jwtUtil.generateToken(extraClaims, user);
+
+        revokeAllUserTokens(user);
+        saveUserToken(user, accessToken);
+
+        return accessToken;
     }
-
-    var user = repo.findByEmail(loginRequest.getEmail())
-                   .orElseThrow(() -> new RuntimeException("User not found"));
-
-    Map<String, Object> extraClaims = new HashMap<>();
-    extraClaims.put("role", user.getRole().toString());
-
-    String accessToken = jwtUtil.generateToken(extraClaims, user);
-
-    revokeAllUserTokens(user);
-    saveUserToken(user, accessToken);
-
-    return accessToken;
-}
-
-
-
 
     public Users updateUser(Long userId, Users user) {
         Optional<Users> optionalUser = repo.findById(userId);
@@ -120,12 +136,14 @@ public class UsersService{
             Users existingUser = optionalUser.get();
             existingUser.setName(user.getName());
             existingUser.setEmail(user.getEmail());
-            existingUser.setPassword(user.getPassword());
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                existingUser.setPassword(bpasswordEncoder.encode(user.getPassword()));
+            }
             existingUser.setContact(user.getContact());
             // existingUser.setDob(user.getDob());
             return repo.save(existingUser);
         }
-        return user;
+        return null; // Consider returning null or throwing an exception if user not found
     }
 
     public Users patchUser(Long userId, Users user) {
@@ -142,7 +160,7 @@ public class UsersService{
                 existingUsers.setPassword(user.getPassword());
             }
             // if (user.getDob() != null) {
-                // existingUsers.setDob(user.getDob());
+            // existingUsers.setDob(user.getDob());
             // }
             if (user.getRole() != null) {
                 existingUsers.setRole(user.getRole());

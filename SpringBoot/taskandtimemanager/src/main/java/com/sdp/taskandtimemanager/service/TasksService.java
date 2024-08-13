@@ -35,6 +35,13 @@ public class TasksService {
         return repo.findById(taskId).orElse(null);
     }
 
+    public List<Tasks> findTasksByUserId(Long userId) {
+        return repo.findByMemberUserid(userId);
+        // repo.findByMemberUserid(userId);
+        // List<Tasks> task = user.getTasks();
+        // return task;
+    }
+
     public String addTask(TaskFormDto task, Long projectId, Long userId) {
         // task.getProject().getProjectid();
         Projects project = prepo.findById(projectId).get();
@@ -94,40 +101,90 @@ public class TasksService {
     }
     
 
-    public Tasks patchTask(Long taskId, Tasks task) {
+    public String patchTask(Long taskId, TaskFormDto taskDto, Long projectId, Long assignedTo) {
         Optional<Tasks> optionalTask = repo.findById(taskId);
         if (optionalTask.isPresent()) {
             Tasks existingTask = optionalTask.get();
 
-            if (task.getTaskname() != null) {
-                existingTask.setTaskname(task.getTaskname());
+            if (taskDto.getTaskname() != null) {
+                existingTask.setTaskname(taskDto.getTaskname());
             }
 
-            if (task.getTaskdescription() != null) {
-                existingTask.setTaskdescription(task.getTaskdescription());
+            if (taskDto.getTaskdescription() != null) {
+                existingTask.setTaskdescription(taskDto.getTaskdescription());
             }
 
-            if (task.getTaskstatus() != null) {
-                existingTask.setTaskstatus(task.getTaskstatus());
+            if (taskDto.getTaskstatus() != null) {
+                existingTask.setTaskstatus(taskDto.getTaskstatus());
             }
 
-            if (task.getTaskpriority() != null) {
-                existingTask.setTaskpriority(task.getTaskpriority());
+            if (taskDto.getTaskpriority() != null) {
+                existingTask.setTaskpriority(taskDto.getTaskpriority());
+            }
+
+            Projects project = prepo.findById(projectId).orElse(null);
+            Users user = urepo.findById(assignedTo).orElse(null);
+    
+            if (project == null) {
+                return "Project not found";
+            }
+            else{
+                existingTask.setProject(project);
+            }
+            if (user == null) {
+                return "User not found";
+            }
+            else{
+                existingTask.setMember(user);
+            }
+
+            repo.save(existingTask);
+            return "Task updated successfully";
+        }
+        return "Task not found";
+    }
+
+    public String patchUserTask(Long taskId, TaskFormDto taskDto) {
+        Optional<Tasks> optionalTask = repo.findById(taskId);
+        if (optionalTask.isPresent()) {
+            Tasks existingTask = optionalTask.get();
+
+            if (taskDto.getTaskname() != null) {
+                existingTask.setTaskname(taskDto.getTaskname());
+            }
+
+            if (taskDto.getTaskdescription() != null) {
+                existingTask.setTaskdescription(taskDto.getTaskdescription());
+            }
+
+            if (taskDto.getTaskstatus() != null) {
+                existingTask.setTaskstatus(taskDto.getTaskstatus());
+            }
+
+            if (taskDto.getTaskpriority() != null) {
+                existingTask.setTaskpriority(taskDto.getTaskpriority());
             }
 
             // Projects project = prepo.findById(projectId).orElse(null);
-            // Users user = urepo.findById(userId).orElse(null);
-
-            // if (project != null) {
-            // existingTask.setProject(project);
+            // Users user = urepo.findById(assignedTo).orElse(null);
+    
+            // if (project == null) {
+            //     return "Project not found";
             // }
-            // if (user != null) {
-            // existingTask.setMember(user);
+            // else{
+            //     existingTask.setProject(project);
+            // }
+            // if (user == null) {
+            //     return "User not found";
+            // }
+            // else{
+            //     existingTask.setMember(user);
             // }
 
-            return repo.save(existingTask);
+            repo.save(existingTask);
+            return "Task updated successfully";
         }
-        return task;
+        return "Task not found";
     }
 
     public void deleteTask(Long taskId) {

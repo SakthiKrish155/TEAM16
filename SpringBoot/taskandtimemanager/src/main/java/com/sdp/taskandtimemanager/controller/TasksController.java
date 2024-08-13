@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.taskandtimemanager.dto.TaskFormDto;
@@ -36,6 +35,11 @@ public class TasksController {
         return service.findTaskById(taskId);
     }
 
+    @GetMapping("/user/{userId}")
+    public List<Tasks> getTasksByUserId(@PathVariable Long userId) {
+        return service.findTasksByUserId(userId);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestBody TaskFormDto task) {
         
@@ -56,19 +60,25 @@ public class TasksController {
     public String update(@PathVariable Long taskId,@RequestBody TaskFormDto task) {
         Long projectId = task.getProjectid();
         Long userId = task.getAssignedto();
-        
-        System.out.println(taskId+" of task Controller");
         return service.updateTask(taskId, task,projectId,userId);
     }
 
     @PatchMapping("/updateSpecific/{taskId}")
-    public Tasks patch(@PathVariable Long taskId, @RequestBody Tasks task) {
-        return service.patchTask(taskId, task);
+    public String patch(@PathVariable Long taskId, @RequestBody TaskFormDto task) {
+        Long projectId = task.getProjectid();
+        Long userId = task.getAssignedto();
+        return service.patchTask(taskId, task,projectId,userId);
+    }
+
+    @PatchMapping("/updateUsertask/{taskId}")
+    public String patchUserTask(@PathVariable Long taskId, @RequestBody TaskFormDto task) {
+        // Long projectId = task.getProjectid();
+        // Long userId = task.getAssignedto();
+        return service.patchUserTask(taskId,task);
     }
 
     @DeleteMapping("/delete/{taskId}")
-    public void delete(@PathVariable Long taskId) {
-        
+    public void delete(@PathVariable Long taskId) {        
         service.deleteTask(taskId);
     }
 
